@@ -10,7 +10,7 @@ from deleteOperations import *
 # createRow(nomeFilme, anoFilme)
 
 #SELEÇÃO DE TODAS AS LINHAS
-# readRow()
+# readAllRows()
 
 #PROJEÇÃO DAS COLUNAS
 # colunas_escolhidas = input("Escolha as colunas para imprimir (separadas por vírgula, ex: nomeFilme, valorEmprestimo, emprestado, ano, quantidadeEmprestimo): ").split(",")
