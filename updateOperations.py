@@ -3,13 +3,32 @@ from index import conexaoBanco
 conexao, cursor = conexaoBanco()
 
 #UPDATE
+def updateRow(id):
+    nome_filme = input("Nome do Filme: ")
+    valor_emprestimo = input("Valor do Emprestimo: ")
+    ano_filme = input("Ano do Filme: ")
 
-nome_filme = "Titanic"
-valor_emprestimo = 8
+    if nome_filme != '' and valor_emprestimo != '' and ano_filme != '':
+        comandoAtualizar = f'UPDATE vendas SET nomeFilme = "{nome_filme}" ,valorEmprestimo = {valor_emprestimo}, ano = {ano_filme} WHERE idFilmes = {id}'
+    elif nome_filme == '' and valor_emprestimo != '' and ano_filme != '':
+        comandoAtualizar = f'UPDATE vendas SET valorEmprestimo = {valor_emprestimo}, ano = {ano_filme} WHERE idFilmes = {id}'
+    elif nome_filme != '' and valor_emprestimo == '' and ano_filme != '':
+        comandoAtualizar = f'UPDATE vendas SET nomeFilme = "{nome_filme}" , ano = {ano_filme} WHERE idFilmes = {id}'
+    elif nome_filme != '' and valor_emprestimo != '' and ano_filme == '':
+        comandoAtualizar = f'UPDATE vendas SET nomeFilme = "{nome_filme}" ,valorEmprestimo = {valor_emprestimo} WHERE idFilmes = {id}'
+    elif nome_filme == '' and valor_emprestimo == '' and ano_filme != '':
+        comandoAtualizar = f'UPDATE vendas SET ano = {ano_filme} WHERE idFilmes = {id}'
+    elif nome_filme == '' and valor_emprestimo != '' and ano_filme == '':
+        comandoAtualizar = f'UPDATE vendas SET valorEmprestimo = {valor_emprestimo} WHERE idFilmes = {id}'
+    elif nome_filme != '' and valor_emprestimo == '' and ano_filme == '':
+        comandoAtualizar = f'UPDATE vendas SET nomeFilme = "{nome_filme}" WHERE idFilmes = {id}'
+    elif nome_filme == '' and valor_emprestimo == '' and ano_filme == '':
+        comandoAtualizar = None
+        cursor.close()
+        conexao.close()
 
-comando = f'UPDATE vendas SET valorEmprestimo = {valor_emprestimo} WHERE nomeFilme = "{nome_filme}"'
-cursor.execute(comando)
-conexao.commit()
+    cursor.execute(comandoAtualizar)
+    conexao.commit()
 
-cursor.close()
-conexao.close()
+    cursor.close()
+    conexao.close()

@@ -3,11 +3,10 @@ from index import conexaoBanco
 conexao, cursor = conexaoBanco()
 
 #DELETE
+def deleteRow(condicaoDel):
+    comandoDeletar = f'DELETE FROM vendas WHERE {condicaoDel}'
+    cursor.execute(comandoDeletar)
+    conexao.commit()
 
-nome_filme = "O Poderoso Chefão"
-comando = f'DELETE FROM vendas WHERE nomeFilme = "{nome_filme}"'
-cursor.execute(comando)
-conexao.commit()
-
-cursor.close()
-conexao.close()
+    cursor.close()
+    conexao.close()
