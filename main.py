@@ -1,7 +1,5 @@
-from createOperations import *
-from readOperations import *
-from updateOperations import *
-from deleteOperations import *
+from Locadora import *
+
 
 #CRIAÇÃO DE UMA LINHA(valorEmprestimo = 10, emprestado = 0
 # e quantidadeEmprestimo = 0 por default)
