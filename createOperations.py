@@ -13,5 +13,5 @@ def createRow(filme, anoFilme):
     comandoCriar = f'INSERT INTO vendas (nomeFilme, valorEmprestimo, emprestado, ano, quantidadeEmprestimo) VALUES ("{nome_filme}", {valor_emprestimo}, {emprestado}, {ano}, {quantidade_emprestimo})'
     cursor.execute(comandoCriar)
     conexao.commit() # edita o banco de dados
-    cursor.close()
-    conexao.close()
+    # cursor.close()
+    # conexao.close()

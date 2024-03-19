@@ -1,8 +1,11 @@
 #Importe das funções de cada operação do CRUD
+from index import conexaoBanco
 from createOperations import createRow
 from readOperations import readAllRows, readColumns, readRow
 from updateOperations import updateRow
 from deleteOperations import deleteRow
+
+conexao, cursor = conexaoBanco()
 
 #FUNÇÃO DE EXIBIÇÃO DO MENU
 def menu():
@@ -55,6 +58,8 @@ while True:
 
     elif escolha == '7':
         #Sair do programa
+        cursor.close()
+        conexao.close()
         print("Saindo...")
         break
 

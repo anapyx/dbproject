@@ -8,5 +8,5 @@ def deleteRow(condicaoDel):
     cursor.execute(comandoDeletar)
     conexao.commit()
 
-    cursor.close()
-    conexao.close()
+    # cursor.close()
+    # conexao.close()

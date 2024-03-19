@@ -10,8 +10,8 @@ def readAllRows():
     resultado = cursor.fetchall()
     print(resultado)
 
-    cursor.close()
-    conexao.close()
+    # # cursor.close()
+    # conexao.close()
 
 #ler colunas escolhidas
 def readColumns(colunas):
@@ -23,8 +23,8 @@ def readColumns(colunas):
             print(valor, end="\t")
         print()
 
-    cursor.close()
-    conexao.close()
+    # cursor.close()
+    # conexao.close()
 
 #ler linhas escolhidas por condição
 def readRow(condicaoLinha):
@@ -33,5 +33,5 @@ def readRow(condicaoLinha):
     resultado = cursor.fetchall()
     print(resultado)
 
-    cursor.close()
-    conexao.close()
+    # cursor.close()
+    # conexao.close()

@@ -25,10 +25,10 @@ def updateRow(id):
     elif nome_filme == '' and valor_emprestimo == '' and ano_filme == '':
         comandoAtualizar = None
         cursor.close()
-        conexao.close()
+        # conexao.close()
 
     cursor.execute(comandoAtualizar)
     conexao.commit()
 
-    cursor.close()
-    conexao.close()
+    # cursor.close()
+    # conexao.close()
