@@ -80,6 +80,16 @@ while True:
             else:
                 print("Escreva um valor válido.")
 
+        print("Atualizar valor de copias? s/n")
+        res = input()
+        if res == "s":
+            print("Digite o novo valor de empréstimo:")
+            valor = input()
+            if valor != 0:
+                db.updateCopies(idFilme,valor)
+            else:
+                print("Escreva um valor válido.")
+
 
     elif escolha == '6':
         #Deletar uma linha por condição
@@ -88,11 +98,11 @@ while True:
 
     elif escolha == '7':
         # Efetuar um emprestimo
-        print("Escolha o id do Filme que você deseja emprestar:")
+        print("Escolha o nome do Filme que você deseja emprestar:")
         db.readAllRows()
-        idFilme = input("-> ")
+        nomeFilme = input("-> ")
 
-        db.updateRent(idFilme)
+        db.updateRent(nomeFilme)
 
     elif escolha == '9':
         # Exibir numero de filmes cadastrados
@@ -102,6 +112,8 @@ while True:
 
     elif escolha == '8':
         #Sair do programa
+        cursor.close()
+        conexao.close()
         print("Saindo...")
         break
 
