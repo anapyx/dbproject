@@ -1,11 +1,8 @@
 #Importe das funções de cada operação do CRUD
-from createOperations import createRow
-from readOperations import readAllRows, readColumns, readRow
-from updateOperations import updateRow
-from deleteOperations import deleteRow
+from Locadora import *
 
 #FUNÇÃO DE EXIBIÇÃO DO MENU
-def menu():
+def printmenu():
     print("\nO QUE DESEJA FAZER?")
     print("1. Criar nova linha")
     print("2. Mostrar todas as linhas")
@@ -13,47 +10,97 @@ def menu():
     print("4. Mostrar linhas escolhidas por condição")
     print("5. Atualizar uma linha existente")
     print("6. Deletar uma linha por condição")
-    print("7. Sair do programa")
+    print("7. Emprestar filme")
+    print("8. Sair do programa")
+
+
+print("\n-------- LOCADORA ---------")
+
+db = Locadora()
 
 #LOOP para exibição do menu 
 while True:
-    menu()  #Exibe o menu
+    printmenu()
     escolha = input("Escolha uma opção: ")
 
     if escolha == '1':
         #Criar nova linha
         nomeFilme = input("Escreva o nome do filme: ")
         anoFilme = input("Escreva o ano do filme: ")
-        createRow(nomeFilme, anoFilme)
+        db.createRow(nomeFilme, anoFilme)
 
     elif escolha == '2':
         #Mostrar todas as linhas
-        readAllRows()
+        db.readAllRows()
 
     elif escolha == '3':
         #Mostrar colunas escolhidas
         colunas_escolhidas = input("Escolha as colunas para imprimir (separadas por vírgula, ex: nomeFilme, valorEmprestimo, emprestado, ano, quantidadeEmprestimo): ").split(",")
         colunas_escolhidas = [coluna.strip() for coluna in colunas_escolhidas]
-        readColumns(colunas_escolhidas)
+        db.readColumns(colunas_escolhidas)
 
     elif escolha == '4':
         #Mostrar linhas escolhidas por condição
         condicaoLer = input("Digite a condição para selecionar as linhas: ")
-        readRow(condicaoLer)
+        db.readRow(condicaoLer)
 
     elif escolha == '5':
         #Atualizar uma linha existente
         print("Escolha o id do Filme que você deseja atualizar:")
-        readAllRows()
+        db.readAllRows()
         idFilme = input("-> ")
-        updateRow(idFilme)
+
+        print("Atualizar nome? s/n")
+        res = input()
+        if res == "s":
+            print("Digite o novo nome:")
+            newname = input()
+            if newname != '':
+                db.updateName(idFilme,newname)
+            else:
+                print("Escreva um nome válido.")
+
+        print("Atualizar ano? s/n")
+        res = input()
+        if res == "s":
+            print("Digite o novo ano:")
+            ano = input()
+            if ano != '':
+                db.updateYear(idFilme,ano)
+            else:
+                print("Escreva um ano válido.")
+
+        print("Atualizar valor? s/n")
+        res = input()
+        if res == "s":
+            print("Digite o novo valor de empréstimo:")
+            valor = input()
+            if valor != '':
+                db.updateYear(idFilme,valor)
+            else:
+                print("Escreva um valor válido.")
+
 
     elif escolha == '6':
         #Deletar uma linha por condição
         condicaoDel = input("Digite a condição para deletar a linha escolhida: ")
-        deleteRow(condicaoDel)
+        db.deleteRow(condicaoDel)
 
     elif escolha == '7':
+        # Efetuar um emprestimo
+        print("Escolha o id do Filme que você deseja emprestar:")
+        db.readAllRows()
+        idFilme = input("-> ")
+
+        db.updateRent(idFilme)
+
+    elif escolha == '9':
+        # Exibir numero de filmes cadastrados
+
+        db.getTotalFilms()
+        break
+
+    elif escolha == '8':
         #Sair do programa
         print("Saindo...")
         break
