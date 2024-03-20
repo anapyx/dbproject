@@ -4,7 +4,7 @@ Disciplina: Banco de Dados I 🎲
 semestre 2023.2 <br>
 Professor Marcelo Iury
 
-**Especificações**
+**Especificações** <br>
 Criar um sistema CRUD para cadastro de estoque/clientes ou realizar vendas relacionado a
 um dos temas sugeridos. Com as seguintes opções:
 1. Inserir
