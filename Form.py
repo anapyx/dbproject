@@ -15,7 +15,7 @@ def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 def open_Login():
-    window.destroy()
+    win.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
     parent_directory = os.path.dirname(current_directory)
     Login_path = os.path.join(parent_directory,'assets', 'Login.py')
@@ -25,6 +25,9 @@ def open_Login():
 def submeterCadastro():
     user = entrada_nome.get()
     phone = entrada_tel.get()
+    email = entrada_email.get()
+    senha = entrada_senha.get()
+    desconto = temDesconto()
  
     # Chamar funcao para adicionar ao banco
 
@@ -136,16 +139,16 @@ def temDesconto():
     return False
 
 
-window = tk.Tk()
-window.bind("<Motion>", cadastroValido)
-window.wm_attributes("-transparentcolor", 'grey')
+win = tk.Tk()
+win.bind("<Motion>", cadastroValido)
+win.wm_attributes("-transparentcolor", 'grey')
 
-window.geometry("1366x740")
-window.configure(bg = "#FFFFFF")
+win.geometry("1366x740")
+win.configure(bg = "#FFFFFF")
 
 
 canvas = Canvas(
-    window,
+    win,
     bg = "#FFFFFF",
     height = 740,
     width = 1366,
@@ -183,7 +186,7 @@ canvas.create_rectangle(
     68.0,
     100.0,
     550.0,
-    720.0,
+    600.0,
     fill="#E7FCF8",
     outline="")
 
@@ -263,7 +266,7 @@ entrada_nome.place(
     height=29.0
 )
 
-label1 = ttk.Label(window, background="#E7FCF8",text="*")
+label1 = ttk.Label(win, background="#E7FCF8",text="*")
 label1.place(
     x=355.0,
     y=190.0,
@@ -293,7 +296,7 @@ entrada_email.place(
     height=29.0
 )
 
-label2 = ttk.Label(window, background="#E7FCF8", text="*")
+label2 = ttk.Label(win, background="#E7FCF8", text="*")
 label2.place(
     x=355.0,
     y=250.0,
@@ -323,7 +326,7 @@ entrada_senha.place(
     height=29.0
 )
 
-label4 = ttk.Label(window, background="#E7FCF8", text="*")
+label4 = ttk.Label(win, background="#E7FCF8", text="*")
 label4.place(
     x=355.0,
     y=310.5,
@@ -354,7 +357,7 @@ entrada_tel.place(
 )
 
 
-label3 = ttk.Label(window, background="#E7FCF8", text="")
+label3 = ttk.Label(win, background="#E7FCF8", text="")
 label3.place(
     x=355.0,
     y=370.0,
@@ -391,7 +394,6 @@ submeter_cadastro = tk.Button(
     borderwidth=0,
     highlightthickness=0,
     command=submeterCadastro,
-    relief="flat",
     state=tk.DISABLED
 )
 submeter_cadastro.place(
@@ -408,15 +410,15 @@ button_1 = tk.Button(
     image=button_image_1,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_1 clicked"),
+    command=lambda: win.destroy,
     relief="flat"
 )
 button_1.place(
     x=217.0,
-    y=476.0,
+    y=545.0,
     width=36.0,
     height=12.0
 )
 
-window.resizable(True, False)
-window.mainloop()
+win.resizable(True, False)
+win.mainloop()
