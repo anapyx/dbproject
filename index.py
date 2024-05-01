@@ -4,8 +4,8 @@ def conexaoBanco():
     conexao = mysql.connector.connect(
         host ='localhost',
         user ='root', 
-        password ='-------', 
-        database ='locadora', 
+        password ='12345', 
+        database ='bdfilmes', 
     )
     cursor = conexao.cursor()
     return conexao, cursor
