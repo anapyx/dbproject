@@ -143,7 +143,7 @@ win = tk.Tk()
 win.bind("<Motion>", cadastroValido)
 win.wm_attributes("-transparentcolor", 'grey')
 
-win.geometry("1366x740")
+win.geometry("1030x740")
 win.configure(bg = "#FFFFFF")
 
 
