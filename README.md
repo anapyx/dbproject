@@ -1,7 +1,7 @@
 # CRUD para uma locadora de vídeo 🎞
 
 Disciplina: Banco de Dados I 🎲
-semestre 2023.2 <br>
+semestre 2024.1 <br>
 Professor Marcelo Iury
 
 **Especificações** <br>
