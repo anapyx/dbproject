@@ -4,15 +4,15 @@ from Locadora import *
 #FUNÇÃO DE EXIBIÇÃO DO MENU
 def printmenu():
     print("\nO QUE DESEJA FAZER?")
-    print("1. Criar nova linha")
-    print("2. Mostrar todas as linhas")
-    print("3. Mostrar colunas escolhidas")
-    print("4. Mostrar linhas escolhidas por condição")
-    print("5. Atualizar uma linha existente")
-    print("6. Deletar uma linha por condição")
-    print("7. Emprestar filme")
-    print("8. Sair do programa")
-
+    print("1. Adicionar um novo filme")  #Criar nova linha
+    print("2. Mostrar todos os filmes")  #Mostrar todas as linhas
+    print("3. Mostrar detalhes de filmes selecionados")  #Mostrar colunas escolhidas
+    print("4. Filtrar filmes por critério")  #Mostrar linhas escolhidas por condição
+    print("5. Atualizar informações de um filme")  #Atualizar uma linha existente
+    print("6. Deletar um filme por critério")  #Deletar uma linha por condição
+    print("7. Emprestar um filme")  #Emprestar filme
+    print("8. Exibir número total de filmes cadastrados")  # Exibir número de filmes
+    print("9. Sair do programa")  #Sair do programa
 
 print("\n-------- LOCADORA ---------")
 
