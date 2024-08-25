@@ -21,3 +21,5 @@ classe.
 4. Gerar relatório com um resumo das informações. Ex: Relatório de vendas, relatório de
 estoque, relatório de clientes. No relatório devem ser exibidas informações como,
 quantidade de elementos cadastrados, valor total, entre outros.
+
+<img src="uml.png" alt="diagrama UML do CRUD">
