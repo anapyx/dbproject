@@ -22,4 +22,6 @@ classe.
 estoque, relatório de clientes. No relatório devem ser exibidas informações como,
 quantidade de elementos cadastrados, valor total, entre outros.
 
+## Diagram UML 
+
 <img src="uml.png" alt="diagrama UML do CRUD">
