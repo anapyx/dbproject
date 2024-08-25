@@ -14,7 +14,7 @@ class Locadora:
 
     #CRIAÇÃO DE UMA LINHA na tabela 'filmes'(id, titulo, diretor, genero, ano, classificacao,
     # valor, vendidos)
-    def createRow(self, tituloFilme, diretorFilme, geneneroFilme, anoFilme, classificaoFilme):
+    def createRow(self, tituloFilme, diretorFilme, generoFilme, anoFilme, classificaoFilme):
         # Verifica se o filme já existe na tabela 'filmes'
         comandoVerificar = f'SELECT COUNT(*) FROM filmes WHERE titulo = "{tituloFilme}" AND diretor = "{diretorFilme}" AND ano = {anoFilme}'
         cursor.execute(comandoVerificar)
@@ -27,7 +27,7 @@ class Locadora:
 
         titulo = tituloFilme
         diretor = diretorFilme
-        genero = geneneroFilme
+        genero = generoFilme
         ano = anoFilme
         classificao = classificaoFilme
         listaValores = [19.90, 24.90, 29.90, 34.90, 39.90]
@@ -42,12 +42,13 @@ class Locadora:
 
         conexao.commit()
 
+    # Deletar filme se alguma condição por coluna seja atendida
     def deleteRow(self, condicaoDel):
         comandoDeletar = f'DELETE FROM filmes WHERE {condicaoDel}'
         cursor.execute(comandoDeletar)
         conexao.commit()
 
-    #SELEÇÃO DE TODAS AS LINHAS
+    # Mostrar TODAS AS LINHAS
     def readAllRows(self):
         comandoLerLinhas = f'SELECT * from filmes'
         cursor.execute(comandoLerLinhas)
@@ -55,7 +56,7 @@ class Locadora:
 
         print(resultado)
 
-    #PROJEÇÃO DAS COLUNAS
+    # Mostra colunas da tabela Filmes
     def readColumns(self, colunas):
         comandoLerColuna = f"SELECT {', '.join(colunas)} from filmes"
         cursor.execute(comandoLerColuna)
@@ -65,68 +66,55 @@ class Locadora:
                 print(valor, end="\t")
             print()
 
-    #SELEÇÃO DE LINHAS POR CONDIÇÃO
+    # Mostra linhas da tabela Filmes por condição
     def readRow(self, condicaoLinha):
         comandoLer = f'SELECT * from filmes WHERE {condicaoLinha}'
         cursor.execute(comandoLer)
         resultado = cursor.fetchall()
         print(resultado)
 
-    #ATUALIZAÇÃO DA COLUNA nomeFilme DE UMA LINHA DA TABELA
-
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    def updateTitulo(self,id, titulo):
+    # Atualização de valores da tabela Filmes
+    def updateTitle(self,id, titulo):
         comandoAtualizar = f'UPDATE filmes SET titulo = "{titulo}" WHERE idFilmes = {id}'
         
         cursor.execute(comandoAtualizar)
         conexao.commit()
 
-    #ATUALIZAÇÃO DA COLUNA ano DE UMA LINHA DA TABELA
+    def updateDirector(self,id, diretor):
+        comandoAtualizar = f'UPDATE filmes SET diretor = "{diretor}" WHERE idFilmes = {id}'
+        
+        cursor.execute(comandoAtualizar)
+        conexao.commit()
+
+    def updateGenre(self,id, genero):
+        comandoAtualizar = f'UPDATE filmes SET genero = "{genero}" WHERE idFilmes = {id}'
+        
+        cursor.execute(comandoAtualizar)
+        conexao.commit()
+
     def updateYear(self,id, ano):
         comandoAtualizar = f'UPDATE filmes SET ano = "{ano}" WHERE idFilmes = {id}'
         
         cursor.execute(comandoAtualizar)
         conexao.commit()
 
-    #ATUALIZAÇÃO DA COLUNA valorEmprestimo DE UMA LINHA DA TABELA
-    def updateValue(self,id, valor_filme):
-        comandoAtualizar = f'UPDATE vendas SET valorEmprestimo = "{valor_filme}" WHERE idFilmes = {id}'
+    def updateRating(self,id, classificacao):
+        comandoAtualizar = f'UPDATE filmes SET classificacao = "{classificacao}" WHERE idFilmes = {id}'
         
         cursor.execute(comandoAtualizar)
         conexao.commit()
 
-    #ATUALIZAÇÃO DA COLUNA emprestado DE UMA LINHA DA TABELA
-    def updateCopies(self,id, valor_emprestado):
-        comandoAtualizar = f'UPDATE vendas SET emprestado = {valor_emprestado} WHERE idFilmes = {id}'
+    # Atualizar valor de compra do Filme
+    def updateValue(self,id, valor):
+        comandoAtualizar = f'UPDATE filmes SET valor = "{valor}" WHERE idFilmes = {id}'
         
         cursor.execute(comandoAtualizar)
         conexao.commit()
 
-    # FUNÇÃO EMPRESTAR FILME   
-    def updateRent(self,filme):
-        # ALTERAR valor para emprestado
-        getEmprestadoComando = f'SELECT emprestado from vendas WHERE nomeFilme = "{filme}"'
-        cursor.execute(getEmprestadoComando)
-        getEmprestado = cursor.fetchone()
-        valorEmprestado = getEmprestado[0]
-
-        getValorEmprestimo = f'SELECT valorEmprestimo from vendas WHERE nomeFilme = "{filme}"'
-        cursor.execute(getValorEmprestimo)
-        getValorEmprestimo = cursor.fetchone()
-        valorEmprestimo = getValorEmprestimo[0]
-
-        getQuantidadeEmprestimo = f'SELECT quantidadeEmprestimo from vendas WHERE nomeFilme = "{filme}"'
-        cursor.execute(getQuantidadeEmprestimo)
-        getQuantEmprestimo = cursor.fetchone()
-        valorQuantEmprestimo = getQuantEmprestimo[0]
+    # Atualizar número de vendas
+    def updateSold(self,id, vendidos):
+        comandoAtualizar = f'UPDATE filmes SET vendidos = "{vendidos}" WHERE idFilmes = {id}'
         
-        if(valorEmprestado <= 0):
-            print("Não há mais cópias do filme escolhido no momento!")
-            conexao.commit()
-            return None
-        else:
-            emprestado = valorEmprestado - 1
-            comandoAtualizar = f'UPDATE vendas SET emprestado = {emprestado}, quantidadeEmprestimo = {valorQuantEmprestimo + valorEmprestimo} WHERE nomeFilme = "{filme}"'
-        
-            cursor.execute(comandoAtualizar)
-            conexao.commit()
+        cursor.execute(comandoAtualizar)
+        conexao.commit()
+
