@@ -1,4 +1,4 @@
-import mysql.connector
+import random
 from index import conexaoBanco
 
 conexao, cursor = conexaoBanco()
@@ -12,27 +12,34 @@ class Locadora:
         self.totalFilms = len(temp)
         print(self.totalFilms)
 
-    #CRIAÇÃO DE UMA LINHA(valorEmprestimo = 10, emprestado = 0
-    # e quantidadeEmprestimo = 0 por default)
-    def createRow(self, filme, anoFilme):
-        nome_filme = filme
-        valor_emprestimo = 10
-        emprestado = 0
+    #CRIAÇÃO DE UMA LINHA na tabela 'filmes'(id, titulo, diretor, genero, ano, classificacao,
+    # valor, vendidos)
+    def createRow(self, tituloFilme, diretorFilme, geneneroFilme, anoFilme, classificaoFilme):
+        titulo = tituloFilme
+        diretor = diretorFilme
+        genero = geneneroFilme
         ano = anoFilme
-        quantidade_emprestimo = 0
-        comandoCriar = f'INSERT INTO vendas (nomeFilme, valorEmprestimo, emprestado, ano, quantidadeEmprestimo) VALUES ("{nome_filme}", {valor_emprestimo}, {emprestado}, {ano}, {quantidade_emprestimo})'
+        classificao = classificaoFilme
+        listaValores = [19.90, 24.90, 29.90, 34.90, 39.90]
+        if ano >= 2023:
+            valor = 44.90
+        else:
+            valor = random.choice(listaValores)
+        vendidos = 0
+
+        comandoCriar = f'INSERT INTO filmes (titulo, diretor, genero, ano, classificao, valor, vendidos) VALUES ("{titulo}", "{diretor}", "{genero}", {ano}, "{classificao}", {valor}, {vendidos})'
         cursor.execute(comandoCriar)
 
         conexao.commit()
 
     def deleteRow(self, condicaoDel):
-        comandoDeletar = f'DELETE FROM vendas WHERE {condicaoDel}'
+        comandoDeletar = f'DELETE FROM filmes WHERE {condicaoDel}'
         cursor.execute(comandoDeletar)
         conexao.commit()
 
     #SELEÇÃO DE TODAS AS LINHAS
     def readAllRows(self):
-        comandoLerLinhas = f'SELECT * from vendas'
+        comandoLerLinhas = f'SELECT * from filmes'
         cursor.execute(comandoLerLinhas)
         resultado = cursor.fetchall()
 
@@ -40,7 +47,7 @@ class Locadora:
 
     #PROJEÇÃO DAS COLUNAS
     def readColumns(self, colunas):
-        comandoLerColuna = f"SELECT {', '.join(colunas)} from vendas"
+        comandoLerColuna = f"SELECT {', '.join(colunas)} from filmes"
         cursor.execute(comandoLerColuna)
         resultados = cursor.fetchall()
         for resultado in resultados:
@@ -50,21 +57,23 @@ class Locadora:
 
     #SELEÇÃO DE LINHAS POR CONDIÇÃO
     def readRow(self, condicaoLinha):
-        comandoLer = f'SELECT * from vendas WHERE {condicaoLinha}'
+        comandoLer = f'SELECT * from filmes WHERE {condicaoLinha}'
         cursor.execute(comandoLer)
         resultado = cursor.fetchall()
         print(resultado)
 
     #ATUALIZAÇÃO DA COLUNA nomeFilme DE UMA LINHA DA TABELA
-    def updateName(self,id, nome_filme):
-        comandoAtualizar = f'UPDATE vendas SET nomeFilme = "{nome_filme}" WHERE idFilmes = {id}'
+
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    def updateTitulo(self,id, titulo):
+        comandoAtualizar = f'UPDATE filmes SET titulo = "{titulo}" WHERE idFilmes = {id}'
         
         cursor.execute(comandoAtualizar)
         conexao.commit()
 
     #ATUALIZAÇÃO DA COLUNA ano DE UMA LINHA DA TABELA
-    def updateYear(self,id, ano_filme):
-        comandoAtualizar = f'UPDATE vendas SET ano = "{ano_filme}" WHERE idFilmes = {id}'
+    def updateYear(self,id, ano):
+        comandoAtualizar = f'UPDATE filmes SET ano = "{ano}" WHERE idFilmes = {id}'
         
         cursor.execute(comandoAtualizar)
         conexao.commit()

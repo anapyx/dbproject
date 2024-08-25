@@ -5,7 +5,7 @@ def conexaoBanco():
         host ='localhost',
         user ='root', 
         password ='12345', 
-        database ='bdfilmes', 
+        database ='locadora', 
     )
     cursor = conexao.cursor()
     return conexao, cursor
