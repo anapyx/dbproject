@@ -1,5 +1,8 @@
 import json
+from Locadora import *
 from imdb import IMDb
+
+db = Locadora()
 
 ia = IMDb()
 
@@ -8,39 +11,38 @@ def obter_detalhes_filmes(ids_filmes):
     for id_filme in ids_filmes:
         # Remover o prefixo 'tt' do ID
         id_filme = id_filme.lstrip('tt')
-        
+        lista_filmes = []
         try:
             filme = ia.get_movie(id_filme)
             
             if filme:
-                print(f"Título: {filme.get('title', 'Título desconhecido')}")
+                lista_filmes.append(filme.get('title', 'Título desconhecido'))
                 
                 diretores = filme.get('director')
                 if diretores:
-                    print(f"Diretor: {diretores[0]}")
+                    lista_filmes.append(diretores[0]['name'])
                 else:
-                    print("Diretor: Desconhecido")
+                    lista_filmes.append("Diretor: Desconhecido")
                 
                 generos = filme.get('genres')
                 if generos:
-                    print(f"Gênero: {generos[0]}")
+                    lista_filmes.append(generos[0])
                 else:
-                    print("Gênero: Desconhecido")
+                    lista_filmes.append("Gênero: Desconhecido")
                 
-                print(f"Ano: {filme.get('year', 'Ano desconhecido')}")
+                lista_filmes.append(filme.get('year', 'Ano desconhecido'))
                 
                 # Classificação etária no Brasil
                 certificados = filme.get('certificates')
                 if certificados:
                     for i in certificados:
                         if "brazil" in i.lower():
-                            print(f"Classificação etária: {i}")
-                            print(type(i))
-                            print(i.lstrip('Brazil:'))
+                            lista_filmes.append(i.lstrip('Brazil:'))
                             break
                 else:
-                    print("Classificação etária: Desconhecida")
-            print("\n")
+                    lista_filmes.append(i.lstrip("Classificação etária: Desconhecida"))
+                    
+            db.createRow(lista_filmes[0], lista_filmes[1], lista_filmes[2], lista_filmes[3], lista_filmes[4])
         
         except Exception as e:
             print(f"Erro ao obter filme ID {id_filme}: {e}")

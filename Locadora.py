@@ -15,6 +15,16 @@ class Locadora:
     #CRIAÇÃO DE UMA LINHA na tabela 'filmes'(id, titulo, diretor, genero, ano, classificacao,
     # valor, vendidos)
     def createRow(self, tituloFilme, diretorFilme, geneneroFilme, anoFilme, classificaoFilme):
+        # Verifica se o filme já existe na tabela 'filmes'
+        comandoVerificar = f'SELECT COUNT(*) FROM filmes WHERE titulo = "{tituloFilme}" AND diretor = "{diretorFilme}" AND ano = {anoFilme}'
+        cursor.execute(comandoVerificar)
+        resultado = cursor.fetchone()
+
+        # Se o resultado for maior que 0, o filme já existe
+        if resultado[0] > 0:
+            print(f'O filme "{tituloFilme}" já existe no banco de dados.')
+            return  # Saia da função sem inserir o filme
+
         titulo = tituloFilme
         diretor = diretorFilme
         genero = geneneroFilme
@@ -27,7 +37,7 @@ class Locadora:
             valor = random.choice(listaValores)
         vendidos = 0
 
-        comandoCriar = f'INSERT INTO filmes (titulo, diretor, genero, ano, classificao, valor, vendidos) VALUES ("{titulo}", "{diretor}", "{genero}", {ano}, "{classificao}", {valor}, {vendidos})'
+        comandoCriar = f'INSERT INTO filmes (titulo, diretor, genero, ano, classificacao, valor, vendidos) VALUES ("{titulo}", "{diretor}", "{genero}", {ano}, "{classificao}", {valor}, {vendidos})'
         cursor.execute(comandoCriar)
 
         conexao.commit()
