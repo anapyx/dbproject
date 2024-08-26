@@ -3,6 +3,11 @@ from index import conexaoBanco
 
 conexao, cursor = conexaoBanco()
 
+long_width = 60
+medium_width = 45
+small_width = 20
+numbers_width = 6
+
 class Locadora:
     def __init__(self):
         self.totalFilms = None
@@ -52,9 +57,12 @@ class Locadora:
     def readAllRows(self):
         comandoLerLinhas = f'SELECT * from filmes'
         cursor.execute(comandoLerLinhas)
-        resultado = cursor.fetchall()
-
-        print(resultado)
+        result = cursor.fetchall()
+        print(f"{' Id':<{numbers_width}}{' Titulo':<{long_width}} {' Diretor':<{medium_width}} {' Genero':<{small_width}} {' Year':<{numbers_width}}{' Classificacao':<{small_width}} {' Valor':>{numbers_width}} {' Vendidos':>{numbers_width}}")
+        print("-" * 190)  # Separator line
+        for row in result:
+            id, titulo, diretor, genero, ano, classificacao, valor, vendidos = row 
+            print(f"{id:<{numbers_width}} {titulo:<{long_width}} {diretor:<{medium_width}} {genero:<{small_width}} {ano:<{numbers_width}}{classificacao:<{small_width}} {valor:>{numbers_width}.2f} {vendidos:>{numbers_width}}") 
 
     # Mostra colunas da tabela Filmes
     def readColumns(self, colunas):
@@ -75,45 +83,45 @@ class Locadora:
 
     # Atualização de valores da tabela Filmes
     def updateTitle(self,id, titulo):
-        comandoAtualizar = f'UPDATE filmes SET titulo = "{titulo}" WHERE idFilmes = {id}'
+        comandoAtualizar = f'UPDATE filmes SET titulo = "{titulo}" WHERE id = {id}'
         
         cursor.execute(comandoAtualizar)
         conexao.commit()
 
     def updateDirector(self,id, diretor):
-        comandoAtualizar = f'UPDATE filmes SET diretor = "{diretor}" WHERE idFilmes = {id}'
+        comandoAtualizar = f'UPDATE filmes SET diretor = "{diretor}" WHERE id = {id}'
         
         cursor.execute(comandoAtualizar)
         conexao.commit()
 
     def updateGenre(self,id, genero):
-        comandoAtualizar = f'UPDATE filmes SET genero = "{genero}" WHERE idFilmes = {id}'
+        comandoAtualizar = f'UPDATE filmes SET genero = "{genero}" WHERE id = {id}'
         
         cursor.execute(comandoAtualizar)
         conexao.commit()
 
     def updateYear(self,id, ano):
-        comandoAtualizar = f'UPDATE filmes SET ano = "{ano}" WHERE idFilmes = {id}'
+        comandoAtualizar = f'UPDATE filmes SET ano = "{ano}" WHERE id = {id}'
         
         cursor.execute(comandoAtualizar)
         conexao.commit()
 
     def updateRating(self,id, classificacao):
-        comandoAtualizar = f'UPDATE filmes SET classificacao = "{classificacao}" WHERE idFilmes = {id}'
+        comandoAtualizar = f'UPDATE filmes SET classificacao = "{classificacao}" WHERE id = {id}'
         
         cursor.execute(comandoAtualizar)
         conexao.commit()
 
     # Atualizar valor de compra do Filme
     def updateValue(self,id, valor):
-        comandoAtualizar = f'UPDATE filmes SET valor = "{valor}" WHERE idFilmes = {id}'
+        comandoAtualizar = f'UPDATE filmes SET valor = "{valor}" WHERE id = {id}'
         
         cursor.execute(comandoAtualizar)
         conexao.commit()
 
     # Atualizar número de vendas
     def updateSold(self,id, vendidos):
-        comandoAtualizar = f'UPDATE filmes SET vendidos = "{vendidos}" WHERE idFilmes = {id}'
+        comandoAtualizar = f'UPDATE filmes SET vendidos = "{vendidos}" WHERE id = {id}'
         
         cursor.execute(comandoAtualizar)
         conexao.commit()

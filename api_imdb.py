@@ -8,7 +8,7 @@ db = Locadora()
 
 ia = IMDb()
 
-def treatRated(rated):
+def treatRated(rated) -> str:
     ratings = {"10", "12", "14", "16", "18", "livre", "l"}
     rated = re.sub('[^a-z0-9]+','', rated.lower())
     for rating in ratings:
@@ -49,12 +49,12 @@ def obter_detalhes_filmes(ids_filmes):
                 if certificados:
                     for i in certificados:
                         if "brazil" in i.lower():
-                            lista_filmes.append(treatRated(i.lstrip('Brazil:')))
+                            lista_filmes.append(i.lstrip('Brazil:'))
                             break
                 else:
-                    # precisa disso no else?
                     lista_filmes.append(i.lstrip("Desconhecida"))
-              
+
+                lista_filmes[4] = treatRated(lista_filmes[4])
                     
             db.createRow(lista_filmes[0], lista_filmes[1], lista_filmes[2], lista_filmes[3], lista_filmes[4])
         
