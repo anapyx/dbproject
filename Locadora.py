@@ -13,9 +13,24 @@ class Locadora:
         self.totalFilms = None
 
     def getTotalFilms(self):
-        temp = cursor.fetchall()
-        self.totalFilms = len(temp)
+        comandoLerTodosFilmes = "SELECT * FROM filmes"
+        cursor.execute(comandoLerTodosFilmes)  # Executa a consulta para selecionar todos os filmes
+        temp = cursor.fetchall()  # Busca todos os registros da consulta
+        self.totalFilms = len(temp)  # Define o total de filmes com o número de registros encontrados
         print(self.totalFilms)
+
+    def getTotalSoldFilms(self):
+        # Consulta SQL para somar todos os valores da coluna 'vendidos'
+        comandoSomarVendidos = "SELECT SUM(vendidos) FROM filmes"
+        cursor.execute(comandoSomarVendidos)  # Executa a consulta
+        total_vendidos = cursor.fetchone()[0]  # Obtém o resultado da soma
+
+        # Se não houver filmes na tabela, o resultado pode ser None, então convertemos para 0
+        if total_vendidos is None:
+            total_vendidos = 0
+
+        print(total_vendidos) # Retorna o total de filmes vendidos
+
 
     #CRIAÇÃO DE UMA LINHA na tabela 'filmes'(id, titulo, diretor, genero, ano, classificacao,
     # valor, vendidos)
@@ -80,6 +95,13 @@ class Locadora:
         cursor.execute(comandoLer)
         resultado = cursor.fetchall()
         print(resultado)
+
+    def readRowById(self, idFilme):
+        # Consulta SQL para verificar se o filme existe com o ID fornecido
+        comandoVerificar = f"SELECT * FROM filmes WHERE id = {idFilme}"
+        cursor.execute(comandoVerificar)
+        resultado = cursor.fetchone()  # Obtém o primeiro resultado, se existir
+        return resultado
 
     # Atualização de valores da tabela Filmes
     def updateTitle(self,id, titulo):

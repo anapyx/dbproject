@@ -100,11 +100,17 @@ while True:
     elif option == '2':
         # Atualizar uma linha existente
         print("Digite o id do filme que você deseja atualizar:")
-        db.readAllRows()
+        # db.readAllRows()
         idFilme = int(input("-> "))
+        
+        resultado = db.readRowById(idFilme)
 
-        print("AQUIIIII")
-        print(idFilme)
+        # Verifica se algum resultado foi encontrado
+        if resultado is None:
+            print(f"Filme com ID {idFilme} não existe no banco de dados.")
+            continue
+        else:
+            print(resultado)
 
         newline()
         print("Atualizar título? s/n")
