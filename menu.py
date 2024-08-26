@@ -22,13 +22,13 @@ def printmenu():
     print("\n  ~ Escolha uma operação: ~")
     print("1. Adicionar um novo filme")  # Criar nova linha
     print("2. Atualizar informações de filme existente")
-    print("3. Mostrar colunas escolhidas dos filmes")  #Mostrar colunas escolhidas
+    print("3. Buscar por nome") 
     print("4. Filtrar filmes por critério")  # Mostrar linhas escolhidas por condição
     print("5. Exibir todos os filmes cadastrados") 
     print("6. Deletar um filme por critério")  # Deletar uma linha por condição
     print("7. Comprar um filme")
-    print("8. Exibir número total de filmes cadastrados")
-    print("9. Exibir número total de filmes vendidos")
+    print("8. Mostrar colunas escolhidas dos filmes")
+    print("9. Exibir relatório")
     print("10. Sair do programa")
 
 # Funções de tratamento de entrada
@@ -158,11 +158,9 @@ while True:
                 print("Escreva um valor válido.")
 
     elif option == '3':
-        # Mostrar colunas escolhidas
-        newline()
-        colunas_escolhidas = input("Escolha as colunas para visualizar (separadas por vírgula, ex: nomeFilme, diretor, genero, ano): ").split(",")
-        colunas_escolhidas = [coluna.strip() for coluna in colunas_escolhidas]
-        db.readColumns(colunas_escolhidas)
+        # Buscar por nome
+        nome = treatTitle(input("Digite o nome do filme para buscar: "))
+        
 
     elif option == '4':
         # Mostrar linhas escolhidas por condição
@@ -192,16 +190,17 @@ while True:
         db.updateSold(nomeFilme, 1)
 
     elif option == '8':
+        # Mostrar colunas escolhidas
+        newline()
+        colunas_escolhidas = input("Escolha as colunas para visualizar (separadas por vírgula, ex: nomeFilme, diretor, genero, ano): ").split(",")
+        colunas_escolhidas = [coluna.strip() for coluna in colunas_escolhidas]
+        db.readColumns(colunas_escolhidas)
+
+    elif option == '9':
         # Exibir numero de filmes cadastrados
         newline()
         print("Total de filmes cadastrados:")
         db.getTotalFilms()
-        break
-
-    elif option == '9':
-        # Exibir total de filmes vendidos
-        newline()
-        #db.readColumns()
 
     elif option == '10':
         #Sair do programa
