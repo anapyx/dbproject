@@ -1,10 +1,22 @@
 import json
+import re
+import string
 from Locadora import *
 from imdb import IMDb
 
 db = Locadora()
 
 ia = IMDb()
+
+def treatRated(rated):
+    ratings = {"10", "12", "14", "16", "18", "livre", "l"}
+    rated = re.sub('[^a-z0-9]+','', rated.lower())
+    for rating in ratings:
+        if rated.startswith(rating):
+            return rating.capitalize()
+
+    return "Desconhecida"
+
 
 # Função para obter e imprimir detalhes de todos os filmes
 def obter_detalhes_filmes(ids_filmes):
@@ -37,10 +49,12 @@ def obter_detalhes_filmes(ids_filmes):
                 if certificados:
                     for i in certificados:
                         if "brazil" in i.lower():
-                            lista_filmes.append(i.lstrip('Brazil:'))
+                            lista_filmes.append(treatRated(i.lstrip('Brazil:')))
                             break
                 else:
-                    lista_filmes.append(i.lstrip("Classificação etária: Desconhecida"))
+                    # precisa disso no else?
+                    lista_filmes.append(i.lstrip("Desconhecida"))
+              
                     
             db.createRow(lista_filmes[0], lista_filmes[1], lista_filmes[2], lista_filmes[3], lista_filmes[4])
         

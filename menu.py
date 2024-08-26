@@ -1,7 +1,9 @@
 #Importe das funções de cada operação do CRUD
 from Locadora import *
+import string
+import re
 
-#FUNÇÃO DE EXIBIÇÃO DO MENU
+# Funções de exibição do menu
 def inicio():
     print("  _                                   _                        ")
     print(" | |                                 | |                       ")
@@ -13,8 +15,8 @@ def inicio():
 
 def printmenu():
     print("\nO QUE DESEJA FAZER?")
-    print("1. Adicionar um novo filme")  #Criar nova linha
-    print("2. Mostrar todos os filmes")  #Mostrar todas as linhas
+    print("1. Adicionar um novo filme")  # Criar nova linha
+    print("2. Mostrar todos os filmes")  # Mostrar todas as linhas
     print("3. Mostrar detalhes de filmes selecionados")  #Mostrar colunas escolhidas
     print("4. Filtrar filmes por critério")  #Mostrar linhas escolhidas por condição
     print("5. Atualizar informações de um filme")  #Atualizar uma linha existente
@@ -22,6 +24,52 @@ def printmenu():
     print("7. Emprestar um filme")  #Emprestar filme
     print("8. Exibir número total de filmes cadastrados")  # Exibir número de filmes
     print("9. Sair do programa")  #Sair do programa
+
+# Funções de tratamento de entrada
+def treatTitle(entry) -> str:
+    while True:
+        if len(entry) > 0:
+            return string.capwords(entry)
+        else:
+            print("[!] Insira um título válido.")
+            entry = input("Escreva o nome do filme: ")
+
+def treatDirector(entry):
+    while True:
+        if len(entry) > 3:
+            return string.capwords(entry)
+        else:
+            print("[!] Insira um(a) diretor(a) válido.")
+            entry = input("Escreva o nome do diretor: ")
+
+def treatGenre(entry):
+    while True:
+        entry = re.sub('[^a-z]+','', entry.lower())
+        if len(entry) >= 5:
+            return string.capwords(entry)
+        else:
+            print("[!] Insira um gênero válido.")
+            entry = input("Escreva o gênero: ")
+
+def treatYear(entry):
+    while True:
+        entry = re.sub('[^0-9]+','', entry.lower())
+        year = int(entry)
+        if len(entry) == 4 and (year >= 1888 and year <= 2024):
+            return year
+        else:
+            print("[!] Insira um ano válido.")
+            entry = input("Escreva o ano do filme: ")
+
+def treatRating(entry):
+    ratings = {"10", "12", "14", "16", "18", "livre", "l"}
+    while True:
+        entry = re.sub('[^a-z0-9]+','', entry.lower())
+        if entry in ratings:
+            return entry.capitalize()
+        else:
+            print("[!] Insira uma classificação válida.")
+            entry = input("Escreva a classificação indicativa: ")
 
 db = Locadora()
 
@@ -34,11 +82,11 @@ while True:
 
     if escolha == '1':
         #Criar nova linha
-        nomeFilme = input("Escreva o nome do filme: ")
-        diretorFilme = input("Escreva o diretor do filme: ")
-        generoFilme = input("Escreva o genero do filme: ")
-        anoFilme = int(input("Escreva o ano do filme: "))
-        classificacaoFilme = input("Escreva a classificacao do filme: ")
+        nomeFilme = treatTitle(input("Escreva o nome do filme: "))
+        diretorFilme = treatDirector(input("Escreva o diretor do filme: "))
+        generoFilme = treatGenre(input("Escreva o genero do filme: "))
+        anoFilme = treatYear(input("Escreva o ano do filme: "))
+        classificacaoFilme = treatRating(input("Escreva a classificacao indicativa do filme: "))
         db.createRow(nomeFilme, diretorFilme, generoFilme, anoFilme, classificacaoFilme)
 
     elif escolha == '2':
