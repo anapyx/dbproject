@@ -26,10 +26,10 @@ def printmenu():
     print("4. Filtrar filmes por critério")  # Mostrar linhas escolhidas por condição
     print("5. Exibir todos os filmes cadastrados") 
     print("6. Deletar um filme por critério")  # Deletar uma linha por condição
-    print("7. Comprar um filme")
-    print("8. Mostrar colunas escolhidas dos filmes")
-    print("9. Exibir relatório")
-    print("10. Sair do programa")
+    #print("7. Comprar um filme")
+    print("7. Mostrar colunas escolhidas dos filmes")
+    print("8. Exibir relatório")
+    print("9. Sair do programa")
 
 # Funções de tratamento de entrada
 def treatTitle(entry) -> str:
@@ -166,7 +166,12 @@ while True:
     elif option == '3':
         # Buscar por nome
         nome = treatTitle(input("Digite o nome do filme para buscar: "))
-        
+        resultado = db.readRowByTitle(nome)
+        if resultado is None:
+            print(f"Filme com título {nome} não existe no banco de dados.")
+            continue
+        else:
+            print(resultado)
 
     elif option == '4':
         # Mostrar linhas escolhidas por condição
@@ -183,33 +188,45 @@ while True:
     elif option == '6':
         # Deletar uma linha por condição
         newline()
-        condicaoDel = input("Digite a condição para deletar a linha escolhida: ")
-        db.deleteRow(condicaoDel)
+        condicaoDel = input("Deseja deletar por 1. Id ou 2. Titulo? ")
+        if condicaoDel == '1':
+            idFilme = int(input("Digite o id do filme: "))
+            resultado = db.readRowById(idFilme)
+            if resultado is None:
+                print(f"Filme com id {idFilme} não existe no banco de dados.")
+                continue
+            else:
+                db.deleteRowById(idFilme)
+                print(f"Filme de id {idFilme} deletado.")
+        elif condicaoDel == '2':
+            nome = treatTitle(input("Digite o nome do filme para buscar: "))
+            resultado = db.readRowByTitle(nome)
+            if resultado is None:
+                print(f"Filme com título '{nome}' não existe no banco de dados.")
+                continue
+            else:
+                db.deleteRowByTitle(nome)
+                print(f"Filme de título '{nome}' deletado.")
+        else:
+            print("Você não digitou uma opção válida.")
 
     elif option == '7':
-        # Efetuar uma compra
-        newline()
-        print("Escolha o filme que deseja comprar:")
-        db.readAllRows()
-        nomeFilme = input("-> ")
-
-        db.updateSold(nomeFilme, 1)
-
-    elif option == '8':
         # Mostrar colunas escolhidas
         newline()
         colunas_escolhidas = input("Escolha as colunas para visualizar (separadas por vírgula, ex: nomeFilme, diretor, genero, ano): ").split(",")
         colunas_escolhidas = [coluna.strip() for coluna in colunas_escolhidas]
         db.readColumns(colunas_escolhidas)
 
-    elif option == '9':
+    elif option == '8':
         # Exibir numero de filmes cadastrados
         newline()
         print("Total de filmes cadastrados:")
         db.getTotalFilms()
+        print("Total de filmes vendidos:")
+        db.getTotalSoldFilms()
 
-    elif option == '10':
-        #Sair do programa
+    elif option == '9':
+        # Sair do programa
         cursor.close()
         conexao.close()
         print("Saindo...")

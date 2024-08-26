@@ -68,6 +68,20 @@ class Locadora:
         cursor.execute(comandoDeletar)
         conexao.commit()
 
+    def deleteRowById(self, idFilme):
+        comandoDeletar = f"DELETE FROM filmes WHERE id = {idFilme}"
+        cursor.execute(comandoDeletar)
+        conexao.commit()
+        resultado = cursor.fetchone()  # Obtém o primeiro resultado, se existir
+        return resultado
+
+    def deleteRowByTitle(self, titulo):
+        comandoDeletar = f"DELETE FROM filmes WHERE titulo = '{titulo}'"
+        cursor.execute(comandoDeletar)
+        conexao.commit()
+        resultado = cursor.fetchone()  # Obtém o primeiro resultado, se existir
+        return resultado
+
     # Mostrar TODAS AS LINHAS
     def readAllRows(self):
         comandoLerLinhas = f'SELECT * from filmes'
@@ -94,11 +108,19 @@ class Locadora:
         comandoLer = f'SELECT * from filmes WHERE {condicaoLinha}'
         cursor.execute(comandoLer)
         resultado = cursor.fetchall()
-        print(resultado)
+        for row in resultado:
+            print(row)
 
     def readRowById(self, idFilme):
         # Consulta SQL para verificar se o filme existe com o ID fornecido
         comandoVerificar = f"SELECT * FROM filmes WHERE id = {idFilme}"
+        cursor.execute(comandoVerificar)
+        resultado = cursor.fetchone()  # Obtém o primeiro resultado, se existir
+        return resultado
+    
+    def readRowByTitle(self, titulo):
+        # Consulta SQL para verificar se o filme existe com o ID fornecido
+        comandoVerificar = f"SELECT * FROM filmes WHERE titulo = '{titulo}'"
         cursor.execute(comandoVerificar)
         resultado = cursor.fetchone()  # Obtém o primeiro resultado, se existir
         return resultado
