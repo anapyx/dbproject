@@ -2,6 +2,15 @@
 from Locadora import *
 
 #FUNÇÃO DE EXIBIÇÃO DO MENU
+def inicio():
+    print("  _                                   _                        ")
+    print(" | |                                 | |                       ")
+    print(" | |        ___     ___    __ _    __| |   ___    _ __    __ _ ")
+    print(" | |       / _ \   / __|  / _` |  / _` |  / _ \  | '__|  / _` |")
+    print(" | |____  | (_) | | (__  | (_| | | (_| | | (_) | | |    | (_| |")
+    print(" |______|  \___/   \___|  \__,_|  \__,_|  \___/  |_|     \__,_|")
+    print("")
+
 def printmenu():
     print("\nO QUE DESEJA FAZER?")
     print("1. Adicionar um novo filme")  #Criar nova linha
@@ -14,9 +23,9 @@ def printmenu():
     print("8. Exibir número total de filmes cadastrados")  # Exibir número de filmes
     print("9. Sair do programa")  #Sair do programa
 
-print("\n-------- LOCADORA ---------")
-
 db = Locadora()
+
+inicio()
 
 #LOOP para exibição do menu 
 while True:
@@ -26,8 +35,11 @@ while True:
     if escolha == '1':
         #Criar nova linha
         nomeFilme = input("Escreva o nome do filme: ")
-        anoFilme = input("Escreva o ano do filme: ")
-        db.createRow(nomeFilme, anoFilme)
+        diretorFilme = input("Escreva o diretor do filme: ")
+        generoFilme = input("Escreva o genero do filme: ")
+        anoFilme = int(input("Escreva o ano do filme: "))
+        classificacaoFilme = input("Escreva a classificacao do filme: ")
+        db.createRow(nomeFilme, diretorFilme, generoFilme, anoFilme, classificacaoFilme)
 
     elif escolha == '2':
         #Mostrar todas as linhas
