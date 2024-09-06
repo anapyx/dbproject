@@ -36,8 +36,8 @@ class Locadora:
     # valor, vendidos)
     def createRow(self, tituloFilme, diretorFilme, generoFilme, anoFilme, classificaoFilme):
         # Verifica se o filme já existe na tabela 'filmes'
-        comandoVerificar = f'SELECT COUNT(*) FROM filmes WHERE titulo = "{tituloFilme}" AND diretor = "{diretorFilme}" AND ano = {anoFilme}'
-        cursor.execute(comandoVerificar)
+        comandoVerificar = f'SELECT COUNT(*) FROM filmes WHERE titulo = %s AND diretor = %s AND ano = %s'
+        cursor.execute(comandoVerificar, (tituloFilme, diretorFilme, anoFilme)) 
         resultado = cursor.fetchone()
 
         # Se o resultado for maior que 0, o filme já existe
@@ -64,20 +64,24 @@ class Locadora:
 
     # Deletar filme se alguma condição por coluna seja atendida
     def deleteRow(self, condicaoDel):
+        colunas_permitidas = ["titulo", "diretor", "genero", "ano", "classificacao"] 
+        if not any(coluna in condicaoDel for coluna in colunas_permitidas):
+            raise ValueError("Condição de deleção inválida. Use apenas colunas permitidas.")
+
         comandoDeletar = f'DELETE FROM filmes WHERE {condicaoDel}'
         cursor.execute(comandoDeletar)
         conexao.commit()
 
     def deleteRowById(self, idFilme):
-        comandoDeletar = f"DELETE FROM filmes WHERE id = {idFilme}"
-        cursor.execute(comandoDeletar)
+        comandoDeletar = "DELETE FROM filmes WHERE id = %s"
+        cursor.execute(comandoDeletar, (idFilme,)) 
         conexao.commit()
         resultado = cursor.fetchone()  # Obtém o primeiro resultado, se existir
         return resultado
 
     def deleteRowByTitle(self, titulo):
-        comandoDeletar = f"DELETE FROM filmes WHERE titulo = '{titulo}'"
-        cursor.execute(comandoDeletar)
+        comandoDeletar = "DELETE FROM filmes WHERE titulo = %s"
+        cursor.execute(comandoDeletar, (titulo,))
         conexao.commit()
         resultado = cursor.fetchone()  # Obtém o primeiro resultado, se existir
         return resultado
@@ -105,68 +109,71 @@ class Locadora:
 
     # Mostra linhas da tabela Filmes por condição
     def readRow(self, condicaoLinha):
+        colunas_permitidas = ["titulo", "diretor", "genero", "ano", "classificacao"] 
+        if not any(coluna in condicaoLinha for coluna in colunas_permitidas):
+            raise ValueError("Condição de leitura inválida. Use apenas colunas permitidas.")
+
         comandoLer = f'SELECT * from filmes WHERE {condicaoLinha}'
         cursor.execute(comandoLer)
+
         resultado = cursor.fetchall()
         for row in resultado:
             print(row)
 
     def readRowById(self, idFilme):
         # Consulta SQL para verificar se o filme existe com o ID fornecido
-        comandoVerificar = f"SELECT * FROM filmes WHERE id = {idFilme}"
-        cursor.execute(comandoVerificar)
+        comandoVerificar = "SELECT * FROM filmes WHERE id = %s"
+        cursor.execute(comandoVerificar, (idFilme,))
         resultado = cursor.fetchone()  # Obtém o primeiro resultado, se existir
         return resultado
     
     def readRowByTitle(self, titulo):
         # Consulta SQL para verificar se o filme existe com o ID fornecido
-        comandoVerificar = f"SELECT * FROM filmes WHERE titulo = '{titulo}'"
-        cursor.execute(comandoVerificar)
+        comandoVerificar = "SELECT * FROM filmes WHERE titulo = %s"
+        cursor.execute(comandoVerificar, (titulo,))
         resultado = cursor.fetchone()  # Obtém o primeiro resultado, se existir
         return resultado
 
     # Atualização de valores da tabela Filmes
     def updateTitle(self,id, titulo):
-        comandoAtualizar = f'UPDATE filmes SET titulo = "{titulo}" WHERE id = {id}'
-        
-        cursor.execute(comandoAtualizar)
+        comandoAtualizar = 'UPDATE filmes SET titulo = %s WHERE id = %s'
+        cursor.execute(comandoAtualizar, (titulo, id))
         conexao.commit()
 
     def updateDirector(self,id, diretor):
-        comandoAtualizar = f'UPDATE filmes SET diretor = "{diretor}" WHERE id = {id}'
-        
-        cursor.execute(comandoAtualizar)
+        comandoAtualizar = 'UPDATE filmes SET diretor = %s WHERE id = %s'
+        cursor.execute(comandoAtualizar, (diretor, id))
         conexao.commit()
 
     def updateGenre(self,id, genero):
-        comandoAtualizar = f'UPDATE filmes SET genero = "{genero}" WHERE id = {id}'
+        comandoAtualizar = 'UPDATE filmes SET genero = %s WHERE id = %s'
         
-        cursor.execute(comandoAtualizar)
+        cursor.execute(comandoAtualizar, (genero, id))
         conexao.commit()
 
     def updateYear(self,id, ano):
-        comandoAtualizar = f'UPDATE filmes SET ano = "{ano}" WHERE id = {id}'
+        comandoAtualizar = 'UPDATE filmes SET ano = %s WHERE id = %s'
         
-        cursor.execute(comandoAtualizar)
+        cursor.execute(comandoAtualizar, (ano, id))
         conexao.commit()
 
     def updateRating(self,id, classificacao):
-        comandoAtualizar = f'UPDATE filmes SET classificacao = "{classificacao}" WHERE id = {id}'
+        comandoAtualizar = 'UPDATE filmes SET classificacao = %s WHERE id = %s'
         
-        cursor.execute(comandoAtualizar)
+        cursor.execute(comandoAtualizar, (classificacao, id))
         conexao.commit()
 
     # Atualizar valor de compra do Filme
     def updateValue(self,id, valor):
-        comandoAtualizar = f'UPDATE filmes SET valor = "{valor}" WHERE id = {id}'
+        comandoAtualizar = 'UPDATE filmes SET valor = %s WHERE id = %s'
         
-        cursor.execute(comandoAtualizar)
+        cursor.execute(comandoAtualizar, (valor, id))
         conexao.commit()
 
     # Atualizar número de vendas
     def updateSold(self,id, vendidos):
-        comandoAtualizar = f'UPDATE filmes SET vendidos = "{vendidos}" WHERE id = {id}'
+        comandoAtualizar = 'UPDATE filmes SET vendidos = %s WHERE id = %s'
         
-        cursor.execute(comandoAtualizar)
+        cursor.execute(comandoAtualizar, (vendidos, id))
         conexao.commit()
 
