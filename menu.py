@@ -32,6 +32,30 @@ def printmenu():
     print("9. Sair do programa")
 
 # Funções de tratamento de entrada
+def treatEntry(entry) -> str:
+    while True:
+        if len(entry) > 0 and entry in ["s", "n"]:
+            return entry
+        else:
+            print("[!] Insira um valor válido.")
+            entry = input("s/n: ")
+
+def treatId(entry) -> int:
+    while True:
+        if len(entry) > 0:
+            return int(entry)
+        else:
+            print("[!] Insira um ID válido.")
+            entry = input("Digite o id do filme que você deseja atualizar: ")
+
+def treatCriteria(entry) -> str:
+    while True:
+        if len(entry) > 0:
+            return string.capwords(entry)
+        else:
+            print("[!] Insira um critério válido.")
+            entry = input("Digite a condição para busca de filmes: ")
+
 def treatTitle(entry) -> str:
     while True:
         if len(entry) > 0:
@@ -99,14 +123,13 @@ while True:
 
     elif option == '2':
         # Atualizar uma linha existente
-        print("Digite o id do filme que você deseja atualizar:")
-        # db.readAllRows()
-        idFilme = int(input("-> "))
+        idFilme = int(treatId(input("Digite o id do filme que você deseja atualizar: ")))
         
         resultado = db.readRowById(idFilme)
 
         # Verifica se algum resultado foi encontrado
         if resultado is None:
+            newline()
             print(f"Filme com ID {idFilme} não existe no banco de dados.")
             continue
         else:
@@ -114,15 +137,17 @@ while True:
 
         newline()
         print("Atualizar título? s/n")
-        res = input()
+        res = treatEntry(input().lower())
         if res == "s":
             print("Digite o novo nome:")
             newname = treatTitle(input())
             db.updateTitle(idFilme, newname)
+        elif res == "n":
+            pass
 
         newline()
         print("Atualizar ano? s/n")
-        res = input()
+        res = treatEntry(input().lower())
         if res == "s":
             print("Digite o novo ano:")
             ano = treatYear(input())
@@ -130,7 +155,7 @@ while True:
 
         newline()
         print("Atualizar diretor? s/n")
-        res = input()
+        res = treatEntry(input().lower())
         if res == "s":
             print("Digite o novo diretor:")
             director = treatDirector(input())
@@ -138,7 +163,7 @@ while True:
     
         newline()
         print("Atualizar gênero? s/n")
-        res = input()
+        res = treatEntry(input().lower())
         if res == "s":
             print("Digite o novo gênero:")
             genre = treatGenre(input())
@@ -146,7 +171,7 @@ while True:
 
         newline()
         print("Atualizar classificação? s/n")
-        res = input()
+        res = treatEntry(input().lower())
         if res == "s":
             print("Digite a nova classificação:")
             rating = treatRating(input())
@@ -154,7 +179,7 @@ while True:
 
         newline()
         print("Atualizar valor? s/n")
-        res = input()
+        res = treatEntry(input().lower())
         if res == "s":
             print("Digite o novo valor de compra:")
             valor = float(input())
@@ -176,7 +201,15 @@ while True:
     elif option == '4':
         # Mostrar linhas escolhidas por condição
         newline()
-        condicaoLer = input("Digite a condição para busca de filmes: ")
+        print("Exemplo de condição: titulo = 'The Godfather':")
+        exemplo_resultado = db.readRow("titulo = 'The Godfather'")
+        newline()
+        condicaoLer = treatCriteria(input(
+            "Digite a condição para busca de filmes (ex: titulo = 'TituloExemplo',\n"
+            "diretor = 'DiretorExemplo', genero = 'GeneroExemplo', ano = AnoExemplo,\n"
+            "classificacao = 'ClassificacaoExemplo', valor = valorExemplo): "
+        ))
+        newline()
         db.readRow(condicaoLer)
 
     elif option == '5':
@@ -213,7 +246,7 @@ while True:
     elif option == '7':
         # Mostrar colunas escolhidas
         newline()
-        colunas_escolhidas = input("Escolha as colunas para visualizar (separadas por vírgula, ex: nomeFilme, diretor, genero, ano): ").split(",")
+        colunas_escolhidas = input("Escolha as colunas para visualizar (separadas por vírgula, ex: titulo, diretor, genero, ano, classificacao, valor): ").split(",")
         colunas_escolhidas = [coluna.strip() for coluna in colunas_escolhidas]
         db.readColumns(colunas_escolhidas)
 

@@ -66,7 +66,8 @@ class Locadora:
     def deleteRow(self, condicaoDel):
         colunas_permitidas = ["titulo", "diretor", "genero", "ano", "classificacao"] 
         if not any(coluna in condicaoDel for coluna in colunas_permitidas):
-            raise ValueError("Condição de deleção inválida. Use apenas colunas permitidas.")
+            print("Condição de deleção inválida. Use apenas colunas permitidas.")
+            return
 
         comandoDeletar = f'DELETE FROM filmes WHERE {condicaoDel}'
         cursor.execute(comandoDeletar)
@@ -109,9 +110,15 @@ class Locadora:
 
     # Mostra linhas da tabela Filmes por condição
     def readRow(self, condicaoLinha):
-        colunas_permitidas = ["titulo", "diretor", "genero", "ano", "classificacao"] 
-        if not any(coluna in condicaoLinha for coluna in colunas_permitidas):
-            raise ValueError("Condição de leitura inválida. Use apenas colunas permitidas.")
+        colunas_permitidas = ["titulo", "diretor", "genero", "ano", "classificacao", "valor"]
+        condicao_coluna = condicaoLinha.lower().split('=')[0].strip()  # Extrai a coluna da condição
+
+        if condicao_coluna not in colunas_permitidas:
+            print("Condição de leitura inválida. Use apenas colunas permitidas.")
+            return
+        elif condicao_coluna == "valor":
+            valueInserted = condicaoLinha.split('=')[1].strip()
+            condicaoLinha = f"{condicao_coluna} = Cast({valueInserted} AS FLOAT)"
 
         comandoLer = f'SELECT * from filmes WHERE {condicaoLinha}'
         cursor.execute(comandoLer)
