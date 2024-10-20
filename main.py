@@ -26,21 +26,31 @@ while True:
 
     if choice == "1":
         showFilms()
+
     elif choice == "2":
-        if is_logged_in and user_role == True:
-            # Handle manage users action
+        if is_logged_in and user_role:
+            # Para admin
+            pass
+        elif is_logged_in and not user_role:
+            # Para usuário
             pass
         else:
-            print("~ Logar ~")
+            # Para usuário não logado
+            print("~ 2. Fazer login ~")
             username = input("Insira seu nome de usuário: ")
             password = input("Insira sua senha: ")
             is_logged_in = getLogin(username, password)
+            if is_logged_in == True:
+                user_role = getUserRole(username)
+
     elif choice == "3":
         if is_logged_in and user_role == True:
-            # Handle manage users action
             pass
         else:
+            # Para usuário não logado
+            print("~ 3. Registrar-se ~")
             printRegisterMenu()
+
     elif choice == 'sair':
         cursor.close()
         conexao.close()

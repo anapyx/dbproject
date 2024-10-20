@@ -43,6 +43,25 @@ def getLogin(username, password):
         print("Falha na conexão com o banco de dados.")
     return False
 
+def getUserRole(username):
+    if conexao:
+        cursor.execute("SELECT * FROM usuario WHERE username = %s", (username,))
+        user = cursor.fetchone()
+        cursor.close()
+        conexao.close()
+        if user:
+            if user[4] == '1':
+                print("Usuário é admin!")
+                return True 
+            else:
+                return False
+        else:
+            print("Usuário não encontrado.")
+    else:
+        print("Falha na conexão com o banco de dados.")
+    return False
+
+
 def treatUsername(username) -> str:
     username_pattern = r"^[a-zA-Z0-9_]+$"
     while True:
