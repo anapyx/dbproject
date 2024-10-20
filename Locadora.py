@@ -184,3 +184,8 @@ class Locadora:
         cursor.execute(comandoAtualizar, (vendidos, id))
         conexao.commit()
 
+    # Preencher tabela de relatorio
+    def fillReport(self):
+        cursor.callproc('PreencherRelatorio')
+        conexao.commit()
+        # fazer try catch para verificar se a procedure foi executada com sucesso

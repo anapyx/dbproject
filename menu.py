@@ -257,13 +257,16 @@ while True:
         db.getTotalFilms()
         print("Total de filmes vendidos:")
         db.getTotalSoldFilms()
+        #preencher relatório
+        db.fillReport()
+        print("Relatório atualizado com sucesso.")
 
     elif option == '9':
         # Sair do programa
         cursor.close()
         conexao.close()
         print("Saindo...")
-        break
+        break        
 
     else:
         print("Opção inválida. Por favor, escolha uma opção válida.")
