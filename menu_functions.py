@@ -174,6 +174,10 @@ def showFilmbyName():
     else:
         print(resultado)
 
+def showFilmbyNameUser():
+    nome = treatTitle(input("Digite o nome do filme para buscar: "))
+    resultado = db.readRowByTitleUser(nome)
+
 def showDeleteFilmRow():
     newline()
     condicaoDel = input("Deseja deletar por 1. Id ou 2. Titulo? ")

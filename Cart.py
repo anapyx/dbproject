@@ -1,47 +1,61 @@
 from Locadora import *
 from menu_functions import *
+from prettytable import PrettyTable
 
-payment = {}
+payment = ['pix', 'cartão', 'boleto', 'berries']
 
 class Cart:
     def __init__(self):
         self.items = {}
-        print('Carrinho vazio')
 
-    def add_item(self, product):
-        filmes = input("Digite os títulos dos filmes que deseja adicionar ao carrinho, separados por vírgulas: ").split(",")
-        filmes = [treatTitle(filme.strip()) for filme in filmes]
+    def _check_film_exists(self, title):
+        resultado = db.readRowByTitle(title)
+        if resultado is None:
+            print(f"Filme com título {title} não existe no banco de dados.")
+            return False
+        return True
 
-        for filme in filmes:
-            resultado = db.readRowByTitle(filme):
-            if resultado is None:
-                newline()
-                print(f"Filme com nome {filme} não existe no banco de dados.")
+    def addItem(self, title):
+        if self._check_film_exists(title):
+            if title in self.items:
+                print("Esse filme já foi adicionado ao seu carrinho.")
+            else:
+                price = db.readPriceByTitle(title)
+                self.items[title] = {'nome': title, 'quantidade': 1, 'preco': price}  # Adicione outras informações do filme aqui
+                print("Filme adicionado ao carrinho.")
+                print(self.items[title])
+            return True
+        return False
+    
+    def getCart(self):
+        if self.items == {}:
+            print("Carrinho vazio.")
+        else:
+            table = PrettyTable(["Nome", "Preço", "Quantidade"])
+            for title, item in self.items.items():
+                table.add_row([item['nome'], item['preco'], item['quantidade'],])
+            print(table)
 
+    def removeItem(self, title):
+        if title in self.items:
+            del self.items[title]
+            print("Item removido.")
 
-
-    def remove_item(self, code):
-        if code in self.items:
-            del self.items[code]
-
-    def get_total_price(self):
-        return sum(item['total_price'] for item in self.items.values())
+    def get_total_price(self, user):
+        total_price = 0
+        for item in self.items.values():
+            total_price += item['quantidade'] * item['preco']
+        
+        print(f"Preço total: {total_price}")
+        discount = db.readUserDiscount(user)
+        if discount == 1:
+            total_price = total_price*0.9
+            print(f"Preço com desconto: {total_price}")
 
     def finish_buy(self):
-        print("Qual o método de pagamento?")
-        print("Purchase completed!")
+        method = input("Qual o método de pagamento? ")
+        if method in payment:
+            
+            print("Purchase completed!")
         self.items = {}  # Clear the cart
 
-# Example usage
-cart = Cart()
-
-product1 = {'code': 1, 'name': 'Product 1', 'price': 10.0}
-product2 = {'code': 2, 'name': 'Product 2', 'price': 20.0}
-
-cart.add_item(product1)
-cart.add_item(product2)
-cart.add_item(product1)  # Add another instance of product 1
-
-print("Total price:", cart.get_total_price())
-
-cart.finish_buy()
