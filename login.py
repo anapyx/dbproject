@@ -58,13 +58,12 @@ def getUserRole(username):
 
 def getUserInfo(username):
     if conexao:
-        cursor.execute("SELECT * FROM cliente nome, email, numFilmes FROM users WHERE username = %s", (username,))
+        cursor.execute("SELECT nome, username, email, numFilmes FROM cliente WHERE username = %s", (username,))
         user = cursor.fetchone()
         if user:
             table = PrettyTable(["Nome", "Username", "Email", "Total Filmes"])
             table.add_row(user)
             table.align["Total Items"] = "r"  # Right-align the "Total Items" column
-            table.add_column("Highlight", ["Yes"])  # Add a column for highlighting
             print(table)
         else:
             print("Usuário não encontrado.")

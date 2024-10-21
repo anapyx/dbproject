@@ -1,6 +1,8 @@
 from Locadora import *
 from menu_functions import *
 
+payment = {}
+
 class Cart:
     def __init__(self):
         self.items = {}
@@ -26,8 +28,7 @@ class Cart:
         return sum(item['total_price'] for item in self.items.values())
 
     def finish_buy(self):
-        # Implement your logic for finishing the purchase here
-        # For example, you could create an order in the database
+        print("Qual o método de pagamento?")
         print("Purchase completed!")
         self.items = {}  # Clear the cart
 

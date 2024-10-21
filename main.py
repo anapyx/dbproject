@@ -121,8 +121,7 @@ while True:
 
         elif is_logged_in and not admin:
             print("~8. Meu perfil~")
-            getUserInfo()
-            pass
+            getUserInfo(logged_user)
         else:
             print("Operação inválida.")
 
@@ -131,6 +130,7 @@ while True:
             newline()
             print("~9. Minhas vendas~")
             # implementar relatório desse vendedor
+            pass
 
         elif is_logged_in and not admin:
             print("~9. Meus pedidos~")
