@@ -1,6 +1,7 @@
 import datetime
 import random
 from index import conexaoBanco
+from prettytable import PrettyTable
 
 conexao, cursor = conexaoBanco()
 
@@ -181,10 +182,74 @@ class Locadora:
         comandoVerificar = "SELECT idFilmes, titulo, diretor, genero, ano, classificacao, valor FROM filmes WHERE genero = %s"
         cursor.execute(comandoVerificar, (genre,))
         resultado = cursor.fetchall()
-        return resultado
-    
+
+        table = PrettyTable()
+        table.field_names = ["Id", "Titulo", "Diretor", "Genero", "Ano", "Classificacao", "Valor"]
+
+        # Add rows to the table
+        for row in resultado:
+            table.add_row(row)
+
+        if resultado:
+            print(table)
+        else:
+            print("Nenhum filme encontrado para o gênero fornecido.")
+
     def readFilmsbyMari(self):
         comandoVerificar = "SELECT idFilmes, titulo, diretor, genero, ano, classificacao, valor FROM filmes WHERE mari = 1"
+        cursor.execute(comandoVerificar)
+        resultado = cursor.fetchall()
+
+        table = PrettyTable()
+        table.field_names = ["Id", "Titulo", "Diretor", "Genero", "Ano", "Classificacao", "Valor"]
+
+        for row in resultado:
+            table.add_row(row)
+
+        if resultado:
+            print(table)
+        else:
+            print("Nenhum filme encontrado fabricado em Mari.")
+        
+    def readFilmbyValueRange(self, min_value, max_value):
+        comandoVerificar = """
+        SELECT idFilmes, titulo, diretor, genero, ano, classificacao, valor 
+        FROM filmes 
+        WHERE valor BETWEEN %s AND %s
+        """
+        cursor.execute(comandoVerificar, (min_value, max_value))
+        resultado = cursor.fetchall()
+    
+        table = PrettyTable()
+        table.field_names = ["Id", "Titulo", "Diretor", "Genero", "Ano", "Classificacao", "Valor"]
+
+        for row in resultado:
+            table.add_row(row)
+
+        if resultado:
+            print(table)
+        else:
+            print("Nenhum filme encontrado com esse intervalo de valores.")
+
+    def readFilmbyStock(self):
+        comandoVerificar = """
+        SELECT idFilmes, titulo, diretor, genero, ano, classificacao, valor, estoque
+        FROM filmes 
+        WHERE estoque < 5
+        """
+        cursor.execute(comandoVerificar)
+        resultado = cursor.fetchall()
+    
+        table = PrettyTable()
+        table.field_names = ["Id", "Titulo", "Diretor", "Genero", "Ano", "Classificacao", "Valor", "Estoque"]
+
+        for row in resultado:
+            table.add_row(row)
+
+        if resultado:
+            print(table)
+        else:
+            print("Nenhum filme encontrado com esse intervalo de valores.")
 
     # Atualização de valores da tabela Filmes
     def updateTitle(self,id, titulo):
