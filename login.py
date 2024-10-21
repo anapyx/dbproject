@@ -1,4 +1,5 @@
 from Locadora import *
+from prettytable import PrettyTable
 import mysql.connector
 import getpass
 import datetime
@@ -54,6 +55,21 @@ def getUserRole(username):
         print("Falha na conexão com o banco de dados.")
     return False
 
+def getUserInfo(username):
+    if conexao:
+        cursor.execute("SELECT * FROM cliente nome, email, numFilmes FROM users WHERE username = %s", (username,))
+        user = cursor.fetchone()
+        if user:
+            table = PrettyTable(["Nome", "Username", "Email", "Total Filmes"])
+            table.add_row(user)
+            table.align["Total Items"] = "r"  # Right-align the "Total Items" column
+            table.add_column("Highlight", ["Yes"])  # Add a column for highlighting
+            print(table)
+        else:
+            print("Usuário não encontrado.")
+    else:
+        err = mysql.connector.Error
+        print("Error:", err)
 
 def treatUsername(username) -> str:
     username_pattern = r"^[a-zA-Z0-9_]+$"

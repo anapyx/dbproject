@@ -50,7 +50,6 @@ while True:
             print("~3. Filtrar filmes~")
             # Faixa de preço, genero, Mari
         else:
-            # Para usuário não logado
             print("~ 3. Registrar-se ~")
             printRegisterMenu()
 
@@ -58,10 +57,10 @@ while True:
         if is_logged_in and admin:
             newline()
             print("~4. Listar Colunas Específicas~")
-            # listar filmes por colunas
+            showFilmColumns()
         elif is_logged_in and not admin:
             print("~4. Adicionar Filme ao Carrinho~")
-            # função carrinho
+            addtoCart()
             pass
         else:
             cursor.close()
@@ -86,25 +85,52 @@ while True:
         if is_logged_in and admin:
             newline()
             print("~6. Atualizar Filme~")
+            showUpdateFilmRow()
 
         elif is_logged_in and not admin:
             print("~6. Remover item do carrinho~")
             # remover
             pass
         else:
-            # Para usuário não logado
             print("Operação inválida.")
 
     elif choice == "7":
         if is_logged_in and admin:
             newline()
             print("~7. Deletar Filme~")
+            showDeleteFilmRow()
 
         elif is_logged_in and not admin:
             print("~7. Efetuar compra~")
+            # comprar atualizar tabela pedidos
             pass
         else:
-            # Para usuário não logado
+            print("Operação inválida.")
+
+    elif choice == "8":
+        if is_logged_in and admin:
+            newline()
+            print("~8. Gerar Relatório~")
+            # implementar relatório
+
+        elif is_logged_in and not admin:
+            print("~8. Meu perfil~")
+            getUserInfo()
+            pass
+        else:
+            print("Operação inválida.")
+
+    elif choice == "9":
+        if is_logged_in and admin:
+            newline()
+            print("~9. Minhas vendas~")
+            # implementar relatório desse vendedor
+
+        elif is_logged_in and not admin:
+            print("~9. Meus pedidos~")
+            # histórico de pedido desse usuário
+            pass
+        else:
             print("Operação inválida.")
 
     elif choice == 'sair':
