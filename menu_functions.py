@@ -137,9 +137,6 @@ db = Locadora()
 
 # Funções de admin
 
-def showFilms():
-    
-
 def showReport():
     newline()
     print("Total de filmes cadastrados:")

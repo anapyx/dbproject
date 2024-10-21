@@ -41,16 +41,17 @@ def getLogin(username, password):
 
 def getUserRole(username):
     if conexao:
-        cursor.execute("SELECT * FROM usuario WHERE username = %s", (username,))
-        user = cursor.fetchone()
-        if user:
-            if user[4] == '1':
+        cursor.execute("SELECT isAdmin FROM usuario WHERE username = %s", (username,))
+        admin = cursor.fetchone()
+        if admin:
+            if admin[0] == 1:
                 print("Usuário é admin!")
                 return True 
             else:
                 return False
         else:
             print("Usuário não encontrado.")
+            return False
     else:
         print("Falha na conexão com o banco de dados.")
     return False

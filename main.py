@@ -1,5 +1,6 @@
 from login import *
 from menu_functions import *
+from Locadora import *
 
 def display_menu(is_logged_in, admin):
     printMenu()
@@ -27,7 +28,10 @@ while True:
     choice = input("Entre com sua escolha: ")
 
     if choice == "1":
-        showFilms()
+        if admin:
+            db.readAllRows()
+        else:
+            db.readAllRowsUser()
 
     elif choice == "2":
         if is_logged_in:
@@ -41,8 +45,10 @@ while True:
             password = input("Insira sua senha: ")
             is_logged_in = getLogin(username, password)
             if is_logged_in == True:
+                print("Logando...")
                 admin = getUserRole(username)
                 logged_user = username
+                newline()
 
     elif choice == "3":
         if is_logged_in:
