@@ -118,7 +118,7 @@ while True:
 
         elif is_logged_in and not admin:
             print("~7. Efetuar compra~")
-            # comprar atualizar tabela pedidos
+            carrinho.finish_buy(logged_user)
             pass
         else:
             print("Operação inválida.")
@@ -127,7 +127,8 @@ while True:
         if is_logged_in and admin:
             newline()
             print("~8. Gerar Relatório~")
-            # implementar relatório
+            db.fillReport()
+            print("Relatório gerado com sucesso.")
 
         elif is_logged_in and not admin:
             print("~8. Meu perfil~")
@@ -144,7 +145,7 @@ while True:
 
         elif is_logged_in and not admin:
             print("~9. Meus pedidos~")
-            # histórico de pedido desse usuário
+            db.readUserHistory(logged_user)
             pass
         else:
             print("Operação inválida.")

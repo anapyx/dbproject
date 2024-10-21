@@ -251,6 +251,13 @@ class Locadora:
         else:
             print("Nenhum filme encontrado com esse intervalo de valores.")
 
+    def readStock(self, titulo):
+        comandoVerificar = 'SELECT estoque FROM filmes WHERE titulo = %s'
+        cursor.execute(comandoVerificar, (titulo,))
+        resultado = cursor.fetchone()
+        return resultado[0]
+
+
     # Atualização de valores da tabela Filmes
     def updateTitle(self,id, titulo):
         comandoAtualizar = 'UPDATE filmes SET titulo = %s WHERE id = %s'
@@ -288,17 +295,17 @@ class Locadora:
         conexao.commit()
 
     # Atualizar número de vendas
-    def updateSold(self,id, vendidos):
-        comandoAtualizar = 'UPDATE filmes SET vendidos = %s WHERE id = %s'
+    def updateSold(self,titulo):
+        comandoAtualizar = 'UPDATE filmes SET vendidos = %s WHERE titulo = %s'
         
-        cursor.execute(comandoAtualizar, (vendidos, id))
+        cursor.execute(comandoAtualizar, (vendidos, titulo))
         conexao.commit()
 
     # Atualizar número de uma venda
-    def updateSold(self,id, vendidos):
-        comandoAtualizar = 'UPDATE filmes SET vendidos = %s WHERE id = %s'
+    def updateStock(self,titulo, estoque):
+        comandoAtualizar = 'UPDATE filmes SET estoque = %s WHERE titulo = %s'
         
-        cursor.execute(comandoAtualizar, (vendidos, id))
+        cursor.execute(comandoAtualizar, (estoque, titulo))
         conexao.commit()
 
     # Preencher tabela de relatorio
@@ -325,6 +332,22 @@ class Locadora:
         cursor.execute(comandoVerificar, (username,))
         resultado = cursor.fetchone()
         return resultado[0]
+
+    def readUserHistory(self, username):
+        comandoVerificar = "SELECT numPedido, username, quantidadeFilmes, totalPedido, dataCompra FROM historico_de_compras WHERE username = %s"
+        cursor.execute(comandoVerificar, (username,))
+        resultado = cursor.fetchall()
+
+        table = PrettyTable()
+        table.field_names = ["NumPedido", "Usuário", "Quantidade", "Valor total", "Data da Compra"]
+
+        for row in resultado:
+            table.add_row(row)
+
+        if resultado:
+            print(table)
+        else:
+            print("Você ainda não efetuou nenhuma compra..")
 
 
     def addCart(self, username, listaFilmes, totalPedido, tipoPagamento):

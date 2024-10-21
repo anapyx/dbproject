@@ -49,13 +49,34 @@ class Cart:
         print(f"Preço total: {total_price}")
         discount = db.readUserDiscount(user)
         if discount == 1:
-            total_price = total_price*0.9
-            print(f"Preço com desconto: {total_price}")
+            discount_price = total_price*0.9
+            print(f"Preço com desconto: {discount_price}")
 
-    def finish_buy(self):
+
+    def get_total(self):
+        total_price = 0
+        for item in self.items.values():
+            total_price += item['quantidade'] * item['preco']
+        return total_price
+
+    def finish_buy(self, user):
         method = input("Qual o método de pagamento? ")
+        filmlist = []
         if method in payment:
-            
-            print("Purchase completed!")
-        self.items = {}  # Clear the cart
+            for title, item in self.items.items():
+                stock = db.readStock(title)
+                if stock >= item['quantidade']:
+                    db.updateStock(title, stock - item['quantidade'])
+                    filmlist.append(title)
+                    print(f"Compra concluída para {title}")
+                else:
+                    print(f"Estoque insuficiente para {title}. Compra cancelada.")
+                    return False  # Stop processing if there's not enough stock
+            db.addCart(user, filmlist, self.get_total(), method)
+            print("Compra concluída!")
+            self.items = {}  # Clear the cart
+            return True
+        else:
+            print("Método de pagamento inválido.")
+            return False
 
