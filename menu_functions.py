@@ -264,3 +264,17 @@ def showAddFilm():
     db.createRow(nomeFilme, diretorFilme, generoFilme, anoFilme, classificacaoFilme)
 
 # Função Usuário logado (carrinho)
+
+def addtoCart():
+    x = input("Digite seu numero de usuario: ")
+    filmes = input("Digite os títulos dos filmes que deseja adicionar ao carrinho, separados por vírgulas: ").split(",")
+    filmes = [treatTitle(filme.strip()) for filme in filmes]
+    pagamento = input("Digite a forma de pagamento: ")
+    total = 0
+    for filme in filmes:
+        valor = db.getFilmValueByTitle(filme)
+        if valor is not None:
+            total += valor
+    
+    print(f"Total da compra: R$ {total:.2f}")
+    db.addCart(x, filmes, total, pagamento)

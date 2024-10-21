@@ -194,6 +194,20 @@ class Locadora:
         conexao.commit()
         # fazer try catch para verificar se a procedure foi executada com sucesso
 
+    # Preço do filme
+    def getFilmValueByTitle(self, titulo):
+        comandoVerificar = "SELECT valor FROM filmes WHERE titulo = %s"
+        cursor.execute(comandoVerificar, (titulo,))
+        resultado = cursor.fetchone()
+        
+        if resultado is None:
+            print(f"Filme com título '{titulo}' não encontrado.")
+            return None
+        else:
+            valor = resultado[0]
+            # print(f"Valor do filme '{titulo}': {valor}")
+            return valor
+
 
     def addCart(self, numCliente, listaFilmes, totalPedido, tipoPagamento):
         # Verificar se o cliente existe
@@ -242,15 +256,3 @@ class Locadora:
         print(f"Detalhes do pedido: Total = {totalPedido}, Tipo de Pagamento = {tipoPagamento}, Desconto = {descontoCliente}")
 
 
-    def getFilmValueByTitle(self, titulo):
-        comandoVerificar = "SELECT valor FROM filmes WHERE titulo = %s"
-        cursor.execute(comandoVerificar, (titulo,))
-        resultado = cursor.fetchone()
-        
-        if resultado is None:
-            print(f"Filme com título '{titulo}' não encontrado.")
-            return None
-        else:
-            valor = resultado[0]
-            # print(f"Valor do filme '{titulo}': {valor}")
-            return valor
