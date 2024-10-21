@@ -23,7 +23,7 @@ def printMenu():
 
 def printAdminMenu():
     print("1. Listar Todos os Filmes")
-    print("2. Buscar Filme")
+    print("2. Buscar filme por nome")
     print("3. Filtrar Filmes")
     print("4. Listar Colunas Específicas")
     print("5. Cadastrar Filme")
@@ -33,12 +33,14 @@ def printAdminMenu():
 
 def printUserMenu():
     print("1. Listar Todos os Filmes")
-    print("2. Buscar Filme")
-    print("3. Adicionar Filme ao Carrinho")
-    print("4. Ver carrinho")
-    print("5. Remover item do carrinho")
-    print("6. Efetuar compra")
-    print("7. Meus filmes")
+    print("2. Buscar filme")
+    print("3. Filtrar Filmes")
+    print("4. Adicionar Filme ao Carrinho")
+    print("5. Ver carrinho")
+    print("6. Remover item do carrinho")
+    print("7. Efetuar compra")
+    print("8. Meu perfil")
+    print("9. Meus pedidos")
 
 def printRegisterMenu():
     print("~ Novo cadastro ~")

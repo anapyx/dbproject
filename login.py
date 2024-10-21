@@ -14,14 +14,11 @@ def newRegister(name, username, email, password, sql_date, discount):
     if conexao:
         try:
             cursor.execute("INSERT INTO usuario (username, password, dataCadastro) VALUES (%s, %s, %s)", (username, password_hash, sql_date))
-            cursor.execute("INSERT INTO cliente (nome, email, desconto) VALUES (%s, %s, %s)", (name, email, discount))
+            cursor.execute("INSERT INTO cliente (username, nome, email, desconto) VALUES (%s, %s, %s, %s)", (username, name, email, discount))
             conexao.commit()
             print("Usuário registrado!")
         except mysql.connector.Error as err:
             print("Erro ao registrar usuário:", err)
-        finally:
-            cursor.close()
-            conexao.close()
     else:
         print("Falha na conexão com o banco de dados.")
 
@@ -29,8 +26,6 @@ def getLogin(username, password):
     if conexao:
         cursor.execute("SELECT * FROM usuario WHERE username = %s", (username,))
         user = cursor.fetchone()
-        cursor.close()
-        conexao.close()
         if user:
             if check_password_hash(user[2], password):
                 print("Login efetuado!")
@@ -47,8 +42,6 @@ def getUserRole(username):
     if conexao:
         cursor.execute("SELECT * FROM usuario WHERE username = %s", (username,))
         user = cursor.fetchone()
-        cursor.close()
-        conexao.close()
         if user:
             if user[4] == '1':
                 print("Usuário é admin!")
