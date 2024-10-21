@@ -314,6 +314,9 @@ class Locadora:
         '''
         cursor.execute(comandoInserirDetalhes, (numPedido, tipoPagamento, totalPedido))
 
+        # Preencher o histórico de compras
+        cursor.callproc('PreencherHistoricoCompras', [numPedido])
+
         # Confirmar as alterações no banco de dados
         conexao.commit()
 
