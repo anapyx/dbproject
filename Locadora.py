@@ -57,8 +57,10 @@ class Locadora:
         else:
             valor = random.choice(listaValores)
         vendidos = 0
+        estoque = random.randint(1, 10)
+        mari = random.randint(0, 1)
 
-        comandoCriar = f'INSERT INTO filmes (titulo, diretor, genero, ano, classificacao, valor, vendidos) VALUES ("{titulo}", "{diretor}", "{genero}", {ano}, "{classificao}", {valor}, {vendidos})'
+        comandoCriar = f'INSERT INTO filmes (titulo, diretor, genero, ano, classificacao, valor, vendidos, estoque, mari) VALUES ("{titulo}", "{diretor}", "{genero}", {ano}, "{classificao}", {valor}, {vendidos}, {estoque}, {mari})'
         cursor.execute(comandoCriar)
 
         conexao.commit()
