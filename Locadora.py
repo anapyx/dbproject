@@ -410,3 +410,32 @@ class Locadora:
 
         print(f"Pedido número {numPedido} inserido com sucesso para o cliente {nome_cliente}, administrador responsável: {admin}.")
         print(f"Detalhes do pedido: Total = {totalPedido:.2f}, Tipo de Pagamento = {tipoPagamento}, Desconto Aplicado = 10%")
+
+    def viewRelatorio(self, admin_nome):
+        comando = "SELECT numPedido, admin, nomeCliente, totalPedido, dataCompra FROM relatorioadminview WHERE admin = %s"
+        cursor.execute(comando, (admin_nome,))
+
+        # Buscar os resultados
+        resultados = cursor.fetchall()
+
+        # Verificar se há resultados
+        if not resultados:
+            print(f"Nenhum pedido encontrado para o administrador: {admin_nome}")
+            return
+
+        # Exibir os resultados
+        print(f"Pedidos do administrador {admin_nome}:")
+        for row in resultados:
+            numPedido, admin, nomeCliente, totalPedido, dataCompra = row
+            print(f"Pedido Nº: {numPedido}, Admin: {admin}, Cliente: {nomeCliente}, Total: {totalPedido}, Data: {dataCompra}")
+
+    def getUserName(self, username):
+        comandoVerificar = "SELECT nome FROM admin WHERE username = %s"
+        cursor.execute(comandoVerificar, (username,))
+        resultado = cursor.fetchone()
+        
+        if resultado is None:
+            print(f"Usuário com username '{username}' não encontrado.")
+            return None
+        else:
+            return resultado[0]

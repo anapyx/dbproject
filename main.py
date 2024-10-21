@@ -77,7 +77,6 @@ while True:
             print("~4. Adicionar Filme ao Carrinho~")
             title = input("Digite o filme para adicionar ao carrinho: ")
             carrinho.addItem(treatTitle(title))
-            pass
         else:
             cursor.close()
             conexao.close()
@@ -119,7 +118,6 @@ while True:
         elif is_logged_in and not admin:
             print("~7. Efetuar compra~")
             carrinho.finish_buy(logged_user)
-            pass
         else:
             print("Operação inválida.")
 
@@ -141,12 +139,12 @@ while True:
             newline()
             print("~9. Minhas vendas~")
             # implementar relatório desse vendedor
-            pass
+            name = db.getUserName(logged_user)
+            db.viewRelatorio(name)
 
         elif is_logged_in and not admin:
             print("~9. Meus pedidos~")
             db.readUserHistory(logged_user)
-            pass
         else:
             print("Operação inválida.")
 
