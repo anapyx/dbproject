@@ -295,9 +295,9 @@ class Locadora:
         conexao.commit()
 
     # Atualizar número de vendas
-    def updateSold(self,titulo):
+    def updateSold(self,titulo, vendidos):
         comandoAtualizar = 'UPDATE filmes SET vendidos = %s WHERE titulo = %s'
-        
+    
         cursor.execute(comandoAtualizar, (vendidos, titulo))
         conexao.commit()
 

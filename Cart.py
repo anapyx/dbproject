@@ -68,7 +68,6 @@ class Cart:
                 if stock >= item['quantidade']:
                     db.updateStock(title, stock - item['quantidade'])
                     filmlist.append(title)
-                    print(f"Compra concluída para {title}")
                 else:
                     print(f"Estoque insuficiente para {title}. Compra cancelada.")
                     return False  # Stop processing if there's not enough stock
