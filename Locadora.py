@@ -194,9 +194,6 @@ class Locadora:
         conexao.commit()
         # fazer try catch para verificar se a procedure foi executada com sucesso
 
-    from datetime import datetime
-
-    from datetime import datetime
 
     def addCart(self, numCliente, listaFilmes, totalPedido, tipoPagamento):
         # Verificar se o cliente existe
