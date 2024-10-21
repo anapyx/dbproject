@@ -4,8 +4,8 @@ from index import conexaoBanco
 
 conexao, cursor = conexaoBanco()
 
-long_width = 60
-medium_width = 45
+long_width = 50
+medium_width = 35
 small_width = 20
 numbers_width = 6
 
@@ -95,11 +95,22 @@ class Locadora:
         comandoLerLinhas = f'SELECT * from filmes'
         cursor.execute(comandoLerLinhas)
         result = cursor.fetchall()
-        print(f"{' Id':<{numbers_width}}{' Titulo':<{long_width}} {' Diretor':<{medium_width}} {' Genero':<{small_width}} {' Year':<{numbers_width}}{' Classificacao':<{small_width}} {' Valor':>{numbers_width}} {' Vendidos':>{numbers_width}}")
+        print(f"{' Id':<{numbers_width}}{' Titulo':<{long_width}} {' Diretor':<{small_width}} {' Genero':<{small_width}} {' Year':<{numbers_width}}{' Classificacao':<{small_width}} {' Valor':>{numbers_width}} {' Vendidos':>{numbers_width}} {' Estoque':>{numbers_width}} {' Mari':>{numbers_width}}")
         print("-" * 190)  # Separator line
         for row in result:
-            id, titulo, diretor, genero, ano, classificacao, valor, vendidos = row 
-            print(f"{id:<{numbers_width}} {titulo:<{long_width}} {diretor:<{medium_width}} {genero:<{small_width}} {ano:<{numbers_width}}{classificacao:<{small_width}} {valor:>{numbers_width}.2f} {vendidos:>{numbers_width}}") 
+            id, titulo, diretor, genero, ano, classificacao, valor, vendidos, estoque, mari = row 
+            print(f"{id:<{numbers_width}} {titulo:<{long_width}} {diretor:<{small_width}} {genero:<{small_width}} {ano:<{numbers_width}}{classificacao:<{small_width}} {valor:>{numbers_width}.2f} {vendidos:>{numbers_width}} {estoque:>{numbers_width}} {mari:>{numbers_width}}") 
+
+    # Mostra todas as linhas pro usuário
+    def readAllRowsUser(self):
+        comandoLerLinhas = f'SELECT idFilmes, titulo, diretor, genero, ano, classificacao, valor from filmes'
+        cursor.execute(comandoLerLinhas)
+        result = cursor.fetchall()
+        print(f"{' Id':<{numbers_width}}{' Titulo':<{long_width}} {' Diretor':<{small_width}} {' Genero':<{small_width}} {' Year':<{numbers_width}}{' Classificacao':<{small_width}} {' Valor':>{numbers_width}} ")
+        print("-" * 190)  # Separator line
+        for row in result:
+            id, titulo, diretor, genero, ano, classificacao, valor = row 
+            print(f"{id:<{numbers_width}} {titulo:<{long_width}} {diretor:<{small_width}} {genero:<{small_width}} {ano:<{numbers_width}}{classificacao:<{small_width}} {valor:>{numbers_width}.2f}") 
 
     # Mostra colunas da tabela Filmes
     def readColumns(self, colunas):
@@ -141,11 +152,39 @@ class Locadora:
         return resultado
     
     def readRowByTitle(self, titulo):
-        # Consulta SQL para verificar se o filme existe com o ID fornecido
+        # Consulta SQL para verificar se o filme existe com o titulo fornecido
         comandoVerificar = "SELECT * FROM filmes WHERE titulo = %s"
         cursor.execute(comandoVerificar, (titulo,))
         resultado = cursor.fetchone()  # Obtém o primeiro resultado, se existir
         return resultado
+    
+    def readRowByTitleUser(self, titulo):
+        # Consulta SQL para verificar se o filme existe com o titulo fornecido
+        comandoVerificar = "SELECT idFilmes, titulo, diretor, genero, ano, classificacao, valor FROM filmes WHERE titulo = %s"
+        cursor.execute(comandoVerificar, (titulo,))
+        resultado = cursor.fetchone()  # Obtém o primeiro resultado, se existir
+        if resultado:
+            id, titulo, diretor, genero, ano, classificacao, valor = resultado
+            print(f"{' Id':<{numbers_width}}{' Titulo':<{long_width}} {' Diretor':<{small_width}} {' Genero':<{small_width}} {' Year':<{numbers_width}}{' Classificacao':<{small_width}} {' Valor':>{numbers_width}}")
+            print("-" * 190)  # Separator line
+            print(f"{id:<{numbers_width}} {titulo:<{long_width}} {diretor:<{small_width}} {genero:<{small_width}} {ano:<{numbers_width}}{classificacao:<{small_width}} {valor:>{numbers_width}.2f}")
+        else:
+            print("Nenhum filme encontrado com o título fornecido.")
+    
+    def readPriceByTitle(self, titulo):
+        comandoVerificar = "SELECT valor FROM filmes WHERE titulo = %s"
+        cursor.execute(comandoVerificar, (titulo,))
+        resultado = cursor.fetchone()  # Obtém o primeiro resultado, se existir
+        return resultado[0]
+
+    def readGenrebyType(self, genre):
+        comandoVerificar = "SELECT idFilmes, titulo, diretor, genero, ano, classificacao, valor FROM filmes WHERE genero = %s"
+        cursor.execute(comandoVerificar, (genre,))
+        resultado = cursor.fetchall()
+        return resultado
+    
+    def readFilmsbyMari(self):
+        comandoVerificar = "SELECT idFilmes, titulo, diretor, genero, ano, classificacao, valor FROM filmes WHERE mari = 1"
 
     # Atualização de valores da tabela Filmes
     def updateTitle(self,id, titulo):
@@ -190,6 +229,13 @@ class Locadora:
         cursor.execute(comandoAtualizar, (vendidos, id))
         conexao.commit()
 
+    # Atualizar número de uma venda
+    def updateSold(self,id, vendidos):
+        comandoAtualizar = 'UPDATE filmes SET vendidos = %s WHERE id = %s'
+        
+        cursor.execute(comandoAtualizar, (vendidos, id))
+        conexao.commit()
+
     # Preencher tabela de relatorio
     def fillReport(self):
         cursor.callproc('PreencherRelatorio')
@@ -208,6 +254,12 @@ class Locadora:
         else:
             valor = resultado[0]
             return valor
+        
+    def readUserDiscount(self, username):
+        comandoVerificar = "SELECT desconto FROM cliente WHERE username = %s"
+        cursor.execute(comandoVerificar, (username,))
+        resultado = cursor.fetchone()
+        return resultado[0]
 
 
     def addCart(self, username, listaFilmes, totalPedido, tipoPagamento):

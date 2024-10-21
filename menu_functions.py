@@ -1,4 +1,5 @@
 #Importe das funções de cada operação do CRUD
+from prettytable import PrettyTable
 from Locadora import *
 from login import *
 import string
@@ -30,6 +31,7 @@ def printAdminMenu():
     print("6. Atualizar Filme")
     print("7. Deletar Filme")
     print("8. Gerar Relatório")
+    print("9. Minhas Vendas")
 
 def printUserMenu():
     print("1. Listar Todos os Filmes")
@@ -135,7 +137,7 @@ db = Locadora()
 
 # Funções de admin
 
-def showFilms():
+def showReport():
     newline()
     print("Total de filmes cadastrados:")
     db.getTotalFilms()
@@ -172,6 +174,10 @@ def showFilmbyName():
     else:
         print(resultado)
 
+def showFilmbyNameUser():
+    nome = treatTitle(input("Digite o nome do filme para buscar: "))
+    resultado = db.readRowByTitleUser(nome)
+
 def showDeleteFilmRow():
     newline()
     condicaoDel = input("Deseja deletar por 1. Id ou 2. Titulo? ")
@@ -194,7 +200,7 @@ def showDeleteFilmRow():
     else:
         print("Você não digitou uma opção válida.")
 
-def shoUpdateFilmRow():
+def showUpdateFilmRow():
     idFilme = int(treatId(input("Digite o id do filme que você deseja atualizar: ")))
     
     resultado = db.readRowById(idFilme)
