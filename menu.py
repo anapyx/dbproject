@@ -30,6 +30,7 @@ def printmenu():
     print("7. Mostrar colunas escolhidas dos filmes")
     print("8. Exibir relatório")
     print("9. Sair do programa")
+    print("10. TESTE CARRINHO")
 
 # Funções de tratamento de entrada
 def treatEntry(entry) -> str:
@@ -266,7 +267,21 @@ while True:
         cursor.close()
         conexao.close()
         print("Saindo...")
-        break        
+        break
+
+    elif option == '10':
+        x = input("Digite seu numero de usuario: ")
+        filmes = input("Digite os títulos dos filmes que deseja adicionar ao carrinho, separados por vírgulas: ").split(",")
+        filmes = [treatTitle(filme.strip()) for filme in filmes]
+        pagamento = input("Digite a forma de pagamento: ")
+        total = 0
+        for filme in filmes:
+            valor = db.getFilmValueByTitle(filme)
+            if valor is not None:
+                total += valor
+        
+        print(f"Total da compra: R$ {total:.2f}")
+        db.addCart(x, filmes, total, pagamento)
 
     else:
         print("Opção inválida. Por favor, escolha uma opção válida.")

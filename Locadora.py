@@ -1,3 +1,4 @@
+import datetime
 import random
 from index import conexaoBanco
 
@@ -125,7 +126,10 @@ class Locadora:
 
         resultado = cursor.fetchall()
         for row in resultado:
-            print(row)
+            if row is None:
+                print("Nenhum filme encontrado.")
+            else:
+                print(row)
 
     def readRowById(self, idFilme):
         # Consulta SQL para verificar se o filme existe com o ID fornecido
@@ -189,3 +193,67 @@ class Locadora:
         cursor.callproc('PreencherRelatorio')
         conexao.commit()
         # fazer try catch para verificar se a procedure foi executada com sucesso
+
+    from datetime import datetime
+
+    from datetime import datetime
+
+    def addCart(self, numCliente, listaFilmes, totalPedido, tipoPagamento):
+        # Verificar se o cliente existe
+        comandoVerificar = 'SELECT numCliente, nome FROM cliente WHERE numCliente = %s'
+        cursor.execute(comandoVerificar, (numCliente,))
+
+        resultado = cursor.fetchone()
+        if resultado is None:
+            print(f"Cliente com número {numCliente} não existe no banco de dados.")
+            return
+        else:
+            num_cliente, nome_cliente = resultado
+            print(f"Cliente encontrado: {nome_cliente} (Número: {num_cliente})")
+
+        # Definir o número do pedido
+        comandoNovoPedido = 'SELECT COALESCE(MAX(numPedido), 0) + 1 FROM pedido'
+        cursor.execute(comandoNovoPedido)
+        numPedido = cursor.fetchone()[0]  # Recupera o próximo número de pedido
+
+        # Data da compra
+        dataCompra = datetime.datetime.now().strftime('%Y-%m-%d')  # Data e hora atuais
+
+        # Calcular o desconto do cliente (10% do totalPedido)
+        descontoCliente = totalPedido * 0.10
+
+        # Inserir os detalhes do pedido na tabela 'pedido'
+        comandoInserirPedido = 'INSERT INTO pedido (numPedido, dataCompra, nomeCliente, numCliente) VALUES (%s, %s, %s, %s)'
+        cursor.execute(comandoInserirPedido, (numPedido, dataCompra, nome_cliente, num_cliente))
+
+        # Inserir os filmes na tabela 'filmes_pedido'
+        comandoInserirFilmes = 'INSERT INTO filmes_pedido (numPedido, titulo) VALUES (%s, %s)'
+        for titulo in listaFilmes:
+            cursor.execute(comandoInserirFilmes, (numPedido, titulo))
+
+        # Inserir os detalhes na tabela 'detalhes_pedido'
+        comandoInserirDetalhes = '''
+            INSERT INTO detalhes_pedido (numPedido, totalPedido, tipoPagamento, descontoCliente, dataCompra) 
+            VALUES (%s, %s, %s, %s, %s)
+        '''
+        cursor.execute(comandoInserirDetalhes, (numPedido, totalPedido, tipoPagamento, descontoCliente, dataCompra))
+
+        # Confirmar as alterações no banco de dados
+        conexao.commit()
+
+        print(f"Pedido número {numPedido} inserido com sucesso para o cliente {nome_cliente}.")
+        print(f"Detalhes do pedido: Total = {totalPedido}, Tipo de Pagamento = {tipoPagamento}, Desconto = {descontoCliente}")
+
+
+    def getFilmValueByTitle(self, titulo):
+        comandoVerificar = "SELECT valor FROM filmes WHERE titulo = %s"
+        cursor.execute(comandoVerificar, (titulo,))
+        resultado = cursor.fetchone()
+        
+        if resultado is None:
+            print(f"Filme com título '{titulo}' não encontrado.")
+            return None
+        else:
+            valor = resultado[0]
+            # print(f"Valor do filme '{titulo}': {valor}")
+            return valor
