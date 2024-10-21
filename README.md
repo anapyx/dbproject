@@ -8,8 +8,7 @@ um dos temas sugeridos. <br/>
   <a href="#-tecnologias">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-especificações-do-projeto">Especificações do Projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-documentação">Documentação</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#-diagrama-uml">Diagrama UML</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#-layout">Layout</a>&nbsp;&nbsp;&nbsp;
+
 </p>
 
 ## Tecnologias
@@ -33,10 +32,10 @@ Clique aqui para visualizar o arquivo [link](https://drive.google.com/file/d/1PH
 
 ## ✍ Documentação
 
-- 1. Locadora: classe que faz as operações na tabela filmes
-- 2. Cart: classe que faz as operações do carrinho do cliente
-- 3. Login: executa as funções de cadastro e autenticação do usuário
-- 4. Index: estabelece conexão com o banco
-- 5. Menu functions: funções de entrada e saída para o usuário
-- 6. Main: código principal para executar o programa
-- 7. Api IMDB: utilizado para alimentar o banco com os filmes mais populares do momento
+- Locadora: classe que faz as operações na tabela filmes
+- Cart: classe que faz as operações do carrinho do cliente
+- Login: executa as funções de cadastro e autenticação do usuário
+- Index: estabelece conexão com o banco
+- Menu functions: funções de entrada e saída para o usuário
+- Main: código principal para executar o programa
+- Api IMDB: utilizado para alimentar o banco com os filmes mais populares do momento
