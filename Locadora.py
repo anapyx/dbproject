@@ -392,7 +392,7 @@ class Locadora:
 
         # Inserir os filmes na tabela 'filmes_pedido' e atualizar estoque/vendidos
         comandoInserirFilmes = 'INSERT INTO filmes_pedido (numPedido, titulo) VALUES (%s, %s)'
-        comandoAtualizarFilme = 'UPDATE filmes SET vendidos = vendidos + 1, estoque = estoque - 1 WHERE titulo = %s AND estoque > 0'
+        comandoAtualizarFilme = 'UPDATE filmes SET vendidos = vendidos + 1 WHERE titulo = %s AND estoque > 0'
         for titulo in listaFilmes:
             # Inserir na tabela filmes_pedido
             cursor.execute(comandoInserirFilmes, (numPedido, titulo))
