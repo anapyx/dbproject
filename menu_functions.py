@@ -62,6 +62,27 @@ def printRegisterMenu():
         discount = '0'
     newRegister(name, username, email, password, sql_date, discount)
     
+def printFilterMenu(admin):
+    print("a. Filtrar filmes por gênero")
+    print("b. Filtrar filmes por preço")
+    print("c. Exibir filmes fabricados em Mari")
+    if admin:
+        print("d. Exibir filmes com menos de 5 unidades")
+    answer = input("Entre com o filtro: ")
+    if answer == "a":
+        genre = input("Escolha o gênero para a busca: ")
+        db.readGenrebyType(treatGenre(genre))
+    elif answer == "b":
+        min = float(input("Escolha o valor mínimo: "))
+        max = float(input("Escolha o valor máximo: "))
+        db.readFilmbyValueRange(min, max)
+    elif answer == "c":
+        print("Filmes fabricados em Mari:")
+        db.readFilmsbyMari()
+    elif answer == "d" and admin:
+        db.readFilmbyStock()
+    else:
+        print("Filtro inválido.")
 
 # Funções de tratamento de entrada
 def treatEntry(entry) -> str:

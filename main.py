@@ -63,7 +63,7 @@ while True:
         if is_logged_in:
             newline()
             print("~3. Filtrar filmes~")
-            # Faixa de preço, genero, Mari
+            printFilterMenu(admin)
         else:
             print("~ 3. Registrar-se ~")
             printRegisterMenu()
