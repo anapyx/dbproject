@@ -207,37 +207,48 @@ class Locadora:
             return None
         else:
             valor = resultado[0]
-            # print(f"Valor do filme '{titulo}': {valor}")
             return valor
 
 
-    def addCart(self, numCliente, listaFilmes, totalPedido, tipoPagamento):
-        # Verificar se o cliente existe
-        comandoVerificar = 'SELECT numCliente, nome FROM cliente WHERE numCliente = %s'
-        cursor.execute(comandoVerificar, (numCliente,))
+    def addCart(self, username, listaFilmes, totalPedido, tipoPagamento):
+        # Verificar se o cliente existe e obter o desconto
+        comandoVerificar = 'SELECT username, nome, desconto FROM cliente WHERE username = %s'
+        cursor.execute(comandoVerificar, (username,))
 
         resultado = cursor.fetchone()
         if resultado is None:
-            print(f"Cliente com número {numCliente} não existe no banco de dados.")
+            print(f"Cliente com username {username} não existe no banco de dados.")
             return
         else:
-            num_cliente, nome_cliente = resultado
-            print(f"Cliente encontrado: {nome_cliente} (Número: {num_cliente})")
+            username, nome_cliente, desconto = resultado
+            print(f"Cliente encontrado: {nome_cliente} (username: {username}), desconto: {desconto}")
+
+        # Aplicar o desconto se houver
+        if desconto > 0:
+            totalPedido = totalPedido - (totalPedido * 0.10)
+            print(f"Total com desconto aplicado: {totalPedido:.2f}")
+        else:
+            print(f"Sem desconto adicional. Total permanece: {totalPedido:.2f}")
 
         # Definir o número do pedido
         comandoNovoPedido = 'SELECT COALESCE(MAX(numPedido), 0) + 1 FROM pedido'
         cursor.execute(comandoNovoPedido)
         numPedido = cursor.fetchone()[0]  # Recupera o próximo número de pedido
 
+        # Capturar aleatoriamente o nome de um administrador
+        comandoAdminAleatorio = 'SELECT nome FROM admin ORDER BY RAND() LIMIT 1'
+        cursor.execute(comandoAdminAleatorio)
+        admin = cursor.fetchone()[0]  # Pega o nome do administrador selecionado aleatoriamente
+
         # Data da compra
         dataCompra = datetime.datetime.now().strftime('%Y-%m-%d')  # Data e hora atuais
 
-        # Calcular o desconto do cliente (10% do totalPedido)
-        descontoCliente = totalPedido * 0.10
-
         # Inserir os detalhes do pedido na tabela 'pedido'
-        comandoInserirPedido = 'INSERT INTO pedido (numPedido, dataCompra, nomeCliente, numCliente) VALUES (%s, %s, %s, %s)'
-        cursor.execute(comandoInserirPedido, (numPedido, dataCompra, nome_cliente, num_cliente))
+        comandoInserirPedido = '''
+            INSERT INTO pedido (numPedido, admin, nomeCliente, username, dataCompra) 
+            VALUES (%s, %s, %s, %s, %s)
+        '''
+        cursor.execute(comandoInserirPedido, (numPedido, admin, nome_cliente, username, dataCompra))
 
         # Inserir os filmes na tabela 'filmes_pedido'
         comandoInserirFilmes = 'INSERT INTO filmes_pedido (numPedido, titulo) VALUES (%s, %s)'
@@ -246,15 +257,13 @@ class Locadora:
 
         # Inserir os detalhes na tabela 'detalhes_pedido'
         comandoInserirDetalhes = '''
-            INSERT INTO detalhes_pedido (numPedido, totalPedido, tipoPagamento, descontoCliente, dataCompra) 
-            VALUES (%s, %s, %s, %s, %s)
+            INSERT INTO detalhes_pedido (numPedido, tipoPagamento, totalPedido) 
+            VALUES (%s, %s, %s)
         '''
-        cursor.execute(comandoInserirDetalhes, (numPedido, totalPedido, tipoPagamento, descontoCliente, dataCompra))
+        cursor.execute(comandoInserirDetalhes, (numPedido, tipoPagamento, totalPedido))
 
         # Confirmar as alterações no banco de dados
         conexao.commit()
 
-        print(f"Pedido número {numPedido} inserido com sucesso para o cliente {nome_cliente}.")
-        print(f"Detalhes do pedido: Total = {totalPedido}, Tipo de Pagamento = {tipoPagamento}, Desconto = {descontoCliente}")
-
-
+        print(f"Pedido número {numPedido} inserido com sucesso para o cliente {nome_cliente}, administrador responsável: {admin}.")
+        print(f"Detalhes do pedido: Total = {totalPedido:.2f}, Tipo de Pagamento = {tipoPagamento}, Desconto Aplicado = 10%")
